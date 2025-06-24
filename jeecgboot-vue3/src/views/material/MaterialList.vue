@@ -54,7 +54,7 @@
   //注册table数据
   const { prefixCls,tableContext,onExportXls,onImportXls } = useListPage({
       tableProps:{
-           title: '物资表',
+           title: 'material',
            api: list,
            columns,
            canResize:false,
@@ -77,7 +77,7 @@
             },
       },
        exportConfig: {
-            name:"物资表",
+            name:"material",
             url: getExportUrl,
             params: queryParam,
           },

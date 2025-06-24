@@ -35,6 +35,11 @@ export const columns: BasicColumn[] = [
     align:"center",
     dataIndex: 'note'
    },
+   {
+    title: '经销商 ID',
+    align:"center",
+    dataIndex: 'dealerId'
+   },
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
@@ -76,6 +81,12 @@ export const searchFormSchema: FormSchema[] = [
       component: 'Input',
       //colProps: {span: 6},
  	},
+	{
+      label: "经销商 ID",
+      field: 'dealerId',
+      component: 'Input',
+      //colProps: {span: 6},
+ 	},
 ];
 //表单数据
 export const formSchema: FormSchema[] = [
@@ -94,7 +105,7 @@ export const formSchema: FormSchema[] = [
     field: 'type',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"xiangshouWay"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -137,6 +148,16 @@ export const formSchema: FormSchema[] = [
     field: 'note',
     component: 'Input',
   },
+  {
+    label: '经销商 ID',
+    field: 'dealerId',
+    component: 'Input',
+    dynamicRules: ({model,schema}) => {
+          return [
+                 { required: true, message: '请输入经销商 ID!'},
+          ];
+     },
+  },
 	// TODO 主键隐藏字段，目前写死为ID
 	{
 	  label: '',
@@ -149,11 +170,12 @@ export const formSchema: FormSchema[] = [
 // 高级查询数据
 export const superQuerySchema = {
   name: {title: '经销商名称',order: 0,view: 'text', type: 'string',},
-  type: {title: '销售类型（饲料 / 药品 / 畜只）',order: 1,view: 'list', type: 'string',dictCode: '',},
+  type: {title: '销售类型（饲料 / 药品 / 畜只）',order: 1,view: 'list', type: 'string',dictCode: 'xiangshouWay',},
   address: {title: '地址',order: 2,view: 'text', type: 'string',},
   contactPerson: {title: '联系人',order: 3,view: 'text', type: 'string',},
   phone: {title: '电话',order: 4,view: 'text', type: 'string',},
   note: {title: '说明',order: 5,view: 'text', type: 'string',},
+  dealerId: {title: '经销商 ID',order: 6,view: 'text', type: 'string',},
 };
 
 /**

@@ -28,6 +28,11 @@ export const columns: BasicColumn[] = [
       return text;
     },
    },
+   {
+    title: '物资id',
+    align:"center",
+    dataIndex: 'materialId'
+   },
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
@@ -53,6 +58,12 @@ export const searchFormSchema: FormSchema[] = [
       componentProps: {
         valueFormat: 'YYYY-MM-DD'
       },
+      //colProps: {span: 6},
+ 	},
+	{
+      label: "物资id",
+      field: 'materialId',
+      component: 'Input',
       //colProps: {span: 6},
  	},
 ];
@@ -94,6 +105,16 @@ export const formSchema: FormSchema[] = [
           ];
      },
   },
+  {
+    label: '物资id',
+    field: 'materialId',
+    component: 'Input',
+    dynamicRules: ({model,schema}) => {
+          return [
+                 { required: true, message: '请输入物资id!'},
+          ];
+     },
+  },
 	// TODO 主键隐藏字段，目前写死为ID
 	{
 	  label: '',
@@ -108,6 +129,7 @@ export const superQuerySchema = {
   currentQuantity: {title: '当前库存数量',order: 0,view: 'number', type: 'number',},
   lastInDate: {title: '最后入库日期',order: 1,view: 'date', type: 'string',},
   lastOutDate: {title: '最后出库日期',order: 2,view: 'date', type: 'string',},
+  materialId: {title: '物资id',order: 3,view: 'text', type: 'string',},
 };
 
 /**

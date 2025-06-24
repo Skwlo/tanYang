@@ -126,7 +126,7 @@ export const formSchema: FormSchema[] = [
     field: 'feedType',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"touliao"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -149,7 +149,7 @@ export const formSchema: FormSchema[] = [
     field: 'operator',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"caozuoren"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -171,9 +171,9 @@ export const superQuerySchema = {
   feedDate: {title: '喂食日期',order: 0,view: 'date', type: 'string',},
   shedPenId: {title: '喂食棚栏 ID',order: 1,view: 'text', type: 'string',},
   formulaId: {title: '使用配方 ID',order: 2,view: 'text', type: 'string',},
-  feedType: {title: '投料类别（精料 / 粗料）',order: 3,view: 'list', type: 'string',dictCode: '',},
+  feedType: {title: '投料类别（精料 / 粗料）',order: 3,view: 'list', type: 'string',dictCode: 'touliao',},
   quantity: {title: '喂食数量 (kg)',order: 4,view: 'number', type: 'number',},
-  operator: {title: '操作人',order: 5,view: 'list', type: 'string',dictCode: '',},
+  operator: {title: '操作人',order: 5,view: 'list', type: 'string',dictCode: 'caozuoren',},
 };
 
 /**

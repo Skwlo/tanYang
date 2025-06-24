@@ -147,7 +147,7 @@ export const formSchema: FormSchema[] = [
     field: 'measureStage',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"celiangjieduan"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -228,7 +228,7 @@ export const formSchema: FormSchema[] = [
 export const superQuerySchema = {
   livestockId: {title: '畜只 ID',order: 0,view: 'text', type: 'string',},
   measureDate: {title: '测量日期',order: 1,view: 'date', type: 'string',},
-  measureStage: {title: '测量阶段（羔羊期 / 育肥期等）',order: 2,view: 'list', type: 'string',dictCode: '',},
+  measureStage: {title: '测量阶段（羔羊期 / 育肥期等）',order: 2,view: 'list', type: 'string',dictCode: 'celiangjieduan',},
   age: {title: '月龄',order: 3,view: 'number', type: 'number',},
   bodyHeight: {title: '体高 (cm)',order: 4,view: 'number', type: 'number',},
   bodyWeight: {title: '体重(kg)',order: 5,view: 'number', type: 'number',},

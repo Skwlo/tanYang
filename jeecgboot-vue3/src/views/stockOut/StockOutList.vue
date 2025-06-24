@@ -54,7 +54,7 @@
   //注册table数据
   const { prefixCls,tableContext,onExportXls,onImportXls } = useListPage({
       tableProps:{
-           title: '出库记录表',
+           title: '出库记录',
            api: list,
            columns,
            canResize:false,
@@ -77,7 +77,7 @@
             },
       },
        exportConfig: {
-            name:"出库记录表",
+            name:"出库记录",
             url: getExportUrl,
             params: queryParam,
           },

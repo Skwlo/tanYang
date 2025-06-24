@@ -4,9 +4,9 @@
    <BasicTable @register="registerTable" :rowSelection="rowSelection">
      <!--插槽:table标题-->
       <template #tableTitle>
-          <a-button type="primary" v-auth="'eliminationRecord:elimination_record:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-          <a-button  type="primary" v-auth="'eliminationRecord:elimination_record:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-          <j-upload-button type="primary" v-auth="'eliminationRecord:elimination_record:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+          <a-button type="primary" v-auth="'testdict:nmu_testdict:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+          <a-button  type="primary" v-auth="'testdict:nmu_testdict:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+          <j-upload-button type="primary" v-auth="'testdict:nmu_testdict:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
           <a-dropdown v-if="selectedRowKeys.length > 0">
               <template #overlay>
                 <a-menu>
@@ -16,7 +16,7 @@
                   </a-menu-item>
                 </a-menu>
               </template>
-              <a-button v-auth="'eliminationRecord:elimination_record:deleteBatch'">批量操作
+              <a-button v-auth="'testdict:nmu_testdict:deleteBatch'">批量操作
                 <Icon icon="mdi:chevron-down"></Icon>
               </a-button>
         </a-dropdown>
@@ -32,18 +32,18 @@
       </template>
     </BasicTable>
     <!-- 表单区域 -->
-    <EliminationRecordModal @register="registerModal" @success="handleSuccess"></EliminationRecordModal>
+    <TestdictModal @register="registerModal" @success="handleSuccess"></TestdictModal>
   </div>
 </template>
 
-<script lang="ts" name="eliminationRecord-eliminationRecord" setup>
+<script lang="ts" name="testdict-testdict" setup>
   import {ref, reactive, computed, unref} from 'vue';
   import {BasicTable, useTable, TableAction} from '/@/components/Table';
   import {useModal} from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage'
-  import EliminationRecordModal from './components/EliminationRecordModal.vue'
-  import {columns, searchFormSchema, superQuerySchema} from './EliminationRecord.data';
-  import {list, deleteOne, batchDelete, getImportUrl,getExportUrl} from './EliminationRecord.api';
+  import TestdictModal from './components/TestdictModal.vue'
+  import {columns, searchFormSchema, superQuerySchema} from './Testdict.data';
+  import {list, deleteOne, batchDelete, getImportUrl,getExportUrl} from './Testdict.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
   import { useUserStore } from '/@/store/modules/user';
   const queryParam = reactive<any>({});
@@ -54,7 +54,7 @@
   //注册table数据
   const { prefixCls,tableContext,onExportXls,onImportXls } = useListPage({
       tableProps:{
-           title: 'elimination_record',
+           title: '字典',
            api: list,
            columns,
            canResize:false,
@@ -77,7 +77,7 @@
             },
       },
        exportConfig: {
-            name:"elimination_record",
+            name:"字典",
             url: getExportUrl,
             params: queryParam,
           },
@@ -156,7 +156,7 @@
          {
            label: '编辑',
            onClick: handleEdit.bind(null, record),
-           auth: 'eliminationRecord:elimination_record:edit'
+           auth: 'testdict:nmu_testdict:edit'
          }
        ]
    }
@@ -175,7 +175,7 @@
              confirm: handleDelete.bind(null, record),
              placement: 'topLeft',
            },
-           auth: 'eliminationRecord:elimination_record:delete'
+           auth: 'testdict:nmu_testdict:delete'
          }
        ]
    }

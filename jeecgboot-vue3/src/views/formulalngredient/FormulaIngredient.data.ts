@@ -6,49 +6,38 @@ import { getWeekMonthQuarterYear } from '/@/utils';
 //列表数据
 export const columns: BasicColumn[] = [
    {
-    title: '课程名字',
+    title: '配方 ID',
     align:"center",
-    dataIndex: 'courseName'
+    dataIndex: 'formulaId'
    },
    {
-    title: '课程代码',
+    title: '原料物资 ID',
     align:"center",
-    dataIndex: 'courseCode'
+    dataIndex: 'materialId'
    },
    {
-    title: '任课老师',
+    title: '占比 (%)',
     align:"center",
-    dataIndex: 'courseClass'
-   },
-   {
-    title: '上课地点',
-    align:"center",
-    dataIndex: 'coursePlace'
+    dataIndex: 'proportion'
    },
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
 	{
-      label: "课程名字",
-      field: 'courseName',
+      label: "配方 ID",
+      field: 'formulaId',
       component: 'Input',
       //colProps: {span: 6},
  	},
 	{
-      label: "课程代码",
-      field: 'courseCode',
+      label: "原料物资 ID",
+      field: 'materialId',
       component: 'Input',
       //colProps: {span: 6},
  	},
 	{
-      label: "任课老师",
-      field: 'courseClass',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "上课地点",
-      field: 'coursePlace',
+      label: "占比 (%)",
+      field: 'proportion',
       component: 'Input',
       //colProps: {span: 6},
  	},
@@ -56,24 +45,34 @@ export const searchFormSchema: FormSchema[] = [
 //表单数据
 export const formSchema: FormSchema[] = [
   {
-    label: '课程名字',
-    field: 'courseName',
+    label: '配方 ID',
+    field: 'formulaId',
     component: 'Input',
+    dynamicRules: ({model,schema}) => {
+          return [
+                 { required: true, message: '请输入配方 ID!'},
+          ];
+     },
   },
   {
-    label: '课程代码',
-    field: 'courseCode',
+    label: '原料物资 ID',
+    field: 'materialId',
     component: 'Input',
+    dynamicRules: ({model,schema}) => {
+          return [
+                 { required: true, message: '请输入原料物资 ID!'},
+          ];
+     },
   },
   {
-    label: '任课老师',
-    field: 'courseClass',
+    label: '占比 (%)',
+    field: 'proportion',
     component: 'Input',
-  },
-  {
-    label: '上课地点',
-    field: 'coursePlace',
-    component: 'Input',
+    dynamicRules: ({model,schema}) => {
+          return [
+                 { required: true, message: '请输入占比 (%)!'},
+          ];
+     },
   },
 	// TODO 主键隐藏字段，目前写死为ID
 	{
@@ -86,10 +85,9 @@ export const formSchema: FormSchema[] = [
 
 // 高级查询数据
 export const superQuerySchema = {
-  courseName: {title: '课程名字',order: 0,view: 'text', type: 'string',},
-  courseCode: {title: '课程代码',order: 1,view: 'text', type: 'string',},
-  courseClass: {title: '任课老师',order: 2,view: 'text', type: 'string',},
-  coursePlace: {title: '上课地点',order: 3,view: 'text', type: 'string',},
+  formulaId: {title: '配方 ID',order: 0,view: 'text', type: 'string',},
+  materialId: {title: '原料物资 ID',order: 1,view: 'text', type: 'string',},
+  proportion: {title: '占比 (%)',order: 2,view: 'text', type: 'string',},
 };
 
 /**

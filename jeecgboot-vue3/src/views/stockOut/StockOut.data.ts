@@ -42,47 +42,6 @@ export const columns: BasicColumn[] = [
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
-	{
-      label: "物资 ID",
-      field: 'materialId',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "出库日期",
-      field: 'outDate',
-      component: 'DatePicker',
-      componentProps: {
-        valueFormat: 'YYYY-MM-DD'
-      },
-      //colProps: {span: 6},
- 	},
-	{
-      label: "出库数量",
-      field: 'quantity',
-      component: 'InputNumber',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "用途（喂食 / 治疗）",
-      field: 'purpose',
-      component: 'JSelectMultiple',
-      componentProps:{
-      },
-      //colProps: {span: 6},
- 	},
-	{
-      label: "操作人",
-      field: 'operator',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "说明",
-      field: 'note',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
 ];
 //表单数据
 export const formSchema: FormSchema[] = [
@@ -124,7 +83,7 @@ export const formSchema: FormSchema[] = [
     field: 'purpose',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"weishizhiliao"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -161,7 +120,7 @@ export const superQuerySchema = {
   materialId: {title: '物资 ID',order: 0,view: 'text', type: 'string',},
   outDate: {title: '出库日期',order: 1,view: 'date', type: 'string',},
   quantity: {title: '出库数量',order: 2,view: 'number', type: 'number',},
-  purpose: {title: '用途（喂食 / 治疗）',order: 3,view: 'list', type: 'string',dictCode: '',},
+  purpose: {title: '用途（喂食 / 治疗）',order: 3,view: 'list', type: 'string',dictCode: 'weishizhiliao',},
   operator: {title: '操作人',order: 4,view: 'text', type: 'string',},
   note: {title: '说明',order: 5,view: 'text', type: 'string',},
 };

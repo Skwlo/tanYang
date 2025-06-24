@@ -171,7 +171,7 @@ export const formSchema: FormSchema[] = [
     field: 'scope',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"mianyiFanwei"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -206,7 +206,7 @@ export const superQuerySchema = {
   dosage: {title: '使用剂量',order: 3,view: 'number', type: 'number',},
   injectionSite: {title: '注射部位',order: 4,view: 'text', type: 'string',},
   standard: {title: '合格指标',order: 5,view: 'text', type: 'string',},
-  scope: {title: '免疫范围（个体 / 群体）',order: 6,view: 'list', type: 'string',dictCode: '',},
+  scope: {title: '免疫范围（个体 / 群体）',order: 6,view: 'list', type: 'string',dictCode: 'mianyiFanwei',},
   note: {title: '说明',order: 7,view: 'text', type: 'string',},
 };
 

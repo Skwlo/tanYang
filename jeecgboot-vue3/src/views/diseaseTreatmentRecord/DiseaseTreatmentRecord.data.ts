@@ -149,7 +149,7 @@ export const formSchema: FormSchema[] = [
     field: 'diseaseType',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"jibingWay"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -202,7 +202,7 @@ export const formSchema: FormSchema[] = [
     field: 'isCured',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"shifouzhiyu"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -233,12 +233,12 @@ export const formSchema: FormSchema[] = [
 export const superQuerySchema = {
   livestockId: {title: '畜只 ID',order: 0,view: 'text', type: 'string',},
   onsetDate: {title: '发病日期',order: 1,view: 'date', type: 'string',},
-  diseaseType: {title: '疾病类型',order: 2,view: 'list', type: 'string',dictCode: '',},
+  diseaseType: {title: '疾病类型',order: 2,view: 'list', type: 'string',dictCode: 'jibingWay',},
   symptoms: {title: '主要症状',order: 3,view: 'text', type: 'string',},
   cause: {title: '发病原因',order: 4,view: 'text', type: 'string',},
   treatmentPlanId: {title: '治疗方案 ID',order: 5,view: 'text', type: 'string',},
   veterinarian: {title: '兽医师',order: 6,view: 'text', type: 'string',},
-  isCured: {title: '是否治愈（1/0）	',order: 7,view: 'list', type: 'string',dictCode: '',},
+  isCured: {title: '是否治愈（1/0）	',order: 7,view: 'list', type: 'string',dictCode: 'shifouzhiyu',},
   note: {title: '治疗说明',order: 8,view: 'text', type: 'string',},
 };
 

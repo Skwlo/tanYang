@@ -61,7 +61,7 @@ export const formSchema: FormSchema[] = [
     field: 'applicableStage',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"peifang"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -91,7 +91,7 @@ export const formSchema: FormSchema[] = [
 // 高级查询数据
 export const superQuerySchema = {
   name: {title: '配方名称',order: 0,view: 'text', type: 'string',},
-  applicableStage: {title: '适用阶段（幼崽 / 育肥 / 成年）',order: 1,view: 'list', type: 'string',dictCode: '',},
+  applicableStage: {title: '适用阶段（幼崽 / 育肥 / 成年）',order: 1,view: 'list', type: 'string',dictCode: 'peifang',},
   description: {title: '配方说明',order: 2,view: 'text', type: 'string',},
 };
 

@@ -54,7 +54,7 @@
   //注册table数据
   const { prefixCls,tableContext,onExportXls,onImportXls } = useListPage({
       tableProps:{
-           title: '畜只表',
+           title: 'livestock',
            api: list,
            columns,
            canResize:false,
@@ -77,7 +77,7 @@
             },
       },
        exportConfig: {
-            name:"畜只表",
+            name:"livestock",
             url: getExportUrl,
             params: queryParam,
           },

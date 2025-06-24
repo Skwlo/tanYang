@@ -105,7 +105,7 @@ export const formSchema: FormSchema[] = [
     field: 'oldType',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"leibie"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -118,7 +118,7 @@ export const formSchema: FormSchema[] = [
     field: 'newType',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"leibie"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -149,8 +149,8 @@ export const formSchema: FormSchema[] = [
 export const superQuerySchema = {
   livestockId: {title: '畜只 ID',order: 0,view: 'text', type: 'string',},
   changeDate: {title: '变更日期',order: 1,view: 'date', type: 'string',},
-  oldType: {title: '原类型',order: 2,view: 'list', type: 'string',dictCode: '',},
-  newType: {title: '新类型',order: 3,view: 'list', type: 'string',dictCode: '',},
+  oldType: {title: '原类型',order: 2,view: 'list', type: 'string',dictCode: 'leibie',},
+  newType: {title: '新类型',order: 3,view: 'list', type: 'string',dictCode: 'leibie',},
   reason: {title: '变更原因',order: 4,view: 'text', type: 'string',},
 };
 

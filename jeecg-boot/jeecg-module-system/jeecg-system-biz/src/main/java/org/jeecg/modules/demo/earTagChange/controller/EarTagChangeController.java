@@ -72,28 +72,63 @@ public class EarTagChangeController extends JeecgController<EarTagChange, IEarTa
 	@RequiresPermissions("earTagChange:ear_tag_change:add")
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody EarTagChange earTagChange) {
-		QueryWrapper<Livestock> queryWrapper = new QueryWrapper<>();
-		queryWrapper.eq("common_ear_tag",earTagChange.getNewCommonEarTag());
-		Livestock livestock = livestockService.getOne(queryWrapper);
+		try {
+			// 校验必填字段
+			if (earTagChange.getLivestockId() == null) {
+				return Result.error("畜只ID不能为空");
+			}
 
-		if (livestock == null){
-			return Result.error("查询不到该只羊的信息，请核实普通耳号");
+			if (earTagChange.getNewCommonEarTag() == null) {
+				return Result.error("新普通耳号不能为空");
+			}
+
+			if (earTagChange.getChangeDate() == null) {
+				return Result.error("更换日期不能为空");
+			}
+
+			// 查询关联的畜只信息（使用livestockId查询）
+			Livestock livestock = livestockService.getByLivestockId(earTagChange.getLivestockId());
+			if (livestock == null) {
+				return Result.error("未找到对应畜只信息，ID：" + earTagChange.getLivestockId());
+			}
+
+			// 校验畜只状态（非死亡/已售状态才能更换耳号）
+			if ("死亡".equals(livestock.getStatus()) || "已售".equals(livestock.getStatus())) {
+				return Result.error("畜只状态为" + livestock.getStatus() + "，不可更换耳号");
+			}
+
+			// 检查新耳号是否已被使用
+			QueryWrapper<Livestock> queryWrapper = new QueryWrapper<>();
+			queryWrapper.eq("common_ear_tag", earTagChange.getNewCommonEarTag());
+			Livestock existingLivestock = livestockService.getOne(queryWrapper);
+
+			if (existingLivestock != null && !existingLivestock.getId().equals(livestock.getId())) {
+				return Result.error("新耳号已被其他畜只使用：" + earTagChange.getNewCommonEarTag());
+			}
+
+			// 保存耳号更换记录
+			earTagChange.setOldCommonEarTag(livestock.getCommonEarTag()); // 记录旧耳号
+			boolean saveResult = earTagChangeService.save(earTagChange);
+			if (!saveResult) {
+				return Result.error("耳号更换记录保存失败");
+			}
+
+			// 更新畜只耳号信息
+			livestock.setCommonEarTag(earTagChange.getNewCommonEarTag());
+			livestock.setUpdateTime(earTagChange.getChangeDate());
+
+			boolean updateResult = livestockService.updateById(livestock);
+			if (!updateResult) {
+				throw new RuntimeException("更新畜只耳号信息失败");
+			}
+
+			return Result.OK("耳号更换记录添加成功，畜只新耳号：" + earTagChange.getNewCommonEarTag());
+		} catch (Exception e) {
+			log.error("添加耳号更换记录失败：", e);
+			return Result.error("添加失败：" + e.getMessage());
 		}
-		System.out.println(livestock.toString());
-
-
-		QueryWrapper<EarTagChange> queryWrapper1 = new QueryWrapper<>();
-		queryWrapper1.eq("new_common_ear_tag",earTagChange.getNewCommonEarTag());
-		EarTagChange earTagChange1 = earTagChangeService.getOne(queryWrapper1);
-
-		if (earTagChange1 != null){
-			return Result.error("新耳号已经有羊佩戴，请重新输入新耳号");
-		}
-
-		queryWrapper.eq("id", earTagChange.getId());
-		earTagChangeService.save(earTagChange);
-		return Result.OK("添加成功！");
 	}
+
 
 
 	 /**
@@ -107,8 +142,56 @@ public class EarTagChangeController extends JeecgController<EarTagChange, IEarTa
 	@RequiresPermissions("earTagChange:ear_tag_change:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody EarTagChange earTagChange) {
-		earTagChangeService.updateById(earTagChange);
-		return Result.OK("编辑成功!");
+		try {
+			// 校验ID
+			if (earTagChange.getId() == null) {
+				return Result.error("耳号更换记录ID不能为空");
+			}
+
+			// 查询原始耳号更换记录
+			EarTagChange oldRecord = earTagChangeService.getById(earTagChange.getId());
+			if (oldRecord == null) {
+				return Result.error("未找到对应耳号更换记录");
+			}
+
+			// 查询关联的畜只信息
+			Livestock livestock = livestockService.getByLivestockId(oldRecord.getLivestockId());
+			if (livestock == null) {
+				return Result.error("未找到对应畜只信息，ID：" + oldRecord.getLivestockId());
+			}
+
+			// 如果新耳号有变化，需要进行校验
+			if (!oldRecord.getNewCommonEarTag().equals(earTagChange.getNewCommonEarTag())) {
+				// 检查新耳号是否已被使用
+				QueryWrapper<Livestock> queryWrapper = new QueryWrapper<>();
+				queryWrapper.eq("common_ear_tag", earTagChange.getNewCommonEarTag());
+				Livestock existingLivestock = livestockService.getOne(queryWrapper);
+
+				if (existingLivestock != null && !existingLivestock.getId().equals(livestock.getId())) {
+					return Result.error("新耳号已被其他畜只使用：" + earTagChange.getNewCommonEarTag());
+				}
+
+				// 更新畜只耳号信息
+				livestock.setCommonEarTag(earTagChange.getNewCommonEarTag());
+				livestock.setUpdateTime(earTagChange.getChangeDate());
+
+				boolean updateResult = livestockService.updateById(livestock);
+				if (!updateResult) {
+					throw new RuntimeException("更新畜只耳号信息失败");
+				}
+			}
+
+			// 更新耳号更换记录
+			boolean updateResult = earTagChangeService.updateById(earTagChange);
+			if (!updateResult) {
+				return Result.error("更新耳号更换记录失败");
+			}
+
+			return Result.OK("耳号更换记录编辑成功");
+		} catch (Exception e) {
+			log.error("编辑耳号更换记录失败：", e);
+			return Result.error("编辑失败：" + e.getMessage());
+		}
 	}
 
 	/**

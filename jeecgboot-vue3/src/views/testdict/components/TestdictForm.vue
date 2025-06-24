@@ -12,11 +12,11 @@
     import {computed, defineComponent} from 'vue';
     import {defHttp} from '/@/utils/http/axios';
     import { propTypes } from '/@/utils/propTypes';
-    import {getBpmFormSchema} from '../Course.data';
-    import {saveOrUpdate} from '../Course.api';
+    import {getBpmFormSchema} from '../Testdict.data';
+    import {saveOrUpdate} from '../Testdict.api';
     
     export default defineComponent({
-        name: "CourseForm",
+        name: "TestdictForm",
         components:{
             BasicForm
         },
@@ -40,7 +40,7 @@
             });
 
             let formData = {};
-            const queryByIdUrl = '/course/course/queryById';
+            const queryByIdUrl = '/testdict/testdict/queryById';
             async function initFormData(){
                 let params = {id: props.formData.dataId};
                 const data = await defHttp.get({url: queryByIdUrl, params});

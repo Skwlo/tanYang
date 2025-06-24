@@ -45,61 +45,14 @@ export const columns: BasicColumn[] = [
     align:"center",
     dataIndex: 'note'
    },
+   {
+    title: '物资 ID',
+    align:"center",
+    dataIndex: 'materialId'
+   },
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
-	{
-      label: "物资名称",
-      field: 'name',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "物资类型（饲料 / 药品 / 疫苗）",
-      field: 'type',
-      component: 'JSelectMultiple',
-      componentProps:{
-      },
-      //colProps: {span: 6},
- 	},
-	{
-      label: "规格含量",
-      field: 'specification',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "计量单位",
-      field: 'unit',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "	警戒数量",
-      field: 'alertQuantity',
-      component: 'InputNumber',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "是否是药品疫苗（1/0）",
-      field: 'isMedicine',
-      component: 'JSelectMultiple',
-      componentProps:{
-      },
-      //colProps: {span: 6},
- 	},
-	{
-      label: "有效期天数（用于计算过期时间）",
-      field: 'expirationDays',
-      component: 'InputNumber',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "说明",
-      field: 'note',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
 ];
 //表单数据
 export const formSchema: FormSchema[] = [
@@ -118,7 +71,7 @@ export const formSchema: FormSchema[] = [
     field: 'type',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"wuzileixing"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -161,7 +114,7 @@ export const formSchema: FormSchema[] = [
     field: 'isMedicine',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"yaopinyimiao"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -184,6 +137,16 @@ export const formSchema: FormSchema[] = [
     field: 'note',
     component: 'Input',
   },
+  {
+    label: '物资 ID',
+    field: 'materialId',
+    component: 'Input',
+    dynamicRules: ({model,schema}) => {
+          return [
+                 { required: true, message: '请输入物资 ID!'},
+          ];
+     },
+  },
 	// TODO 主键隐藏字段，目前写死为ID
 	{
 	  label: '',
@@ -196,13 +159,14 @@ export const formSchema: FormSchema[] = [
 // 高级查询数据
 export const superQuerySchema = {
   name: {title: '物资名称',order: 0,view: 'text', type: 'string',},
-  type: {title: '物资类型（饲料 / 药品 / 疫苗）',order: 1,view: 'list', type: 'string',dictCode: '',},
+  type: {title: '物资类型（饲料 / 药品 / 疫苗）',order: 1,view: 'list', type: 'string',dictCode: 'wuzileixing',},
   specification: {title: '规格含量',order: 2,view: 'text', type: 'string',},
   unit: {title: '计量单位',order: 3,view: 'text', type: 'string',},
   alertQuantity: {title: '	警戒数量',order: 4,view: 'number', type: 'number',},
-  isMedicine: {title: '是否是药品疫苗（1/0）',order: 5,view: 'list', type: 'string',dictCode: '',},
+  isMedicine: {title: '是否是药品疫苗（1/0）',order: 5,view: 'list', type: 'string',dictCode: 'yaopinyimiao',},
   expirationDays: {title: '有效期天数（用于计算过期时间）',order: 6,view: 'number', type: 'number',},
   note: {title: '说明',order: 7,view: 'text', type: 'string',},
+  materialId: {title: '物资 ID',order: 8,view: 'text', type: 'string',},
 };
 
 /**

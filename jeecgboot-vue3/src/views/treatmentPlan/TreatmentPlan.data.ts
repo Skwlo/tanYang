@@ -88,7 +88,7 @@ export const formSchema: FormSchema[] = [
     field: 'diseaseType',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"jibingWay"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -121,7 +121,7 @@ export const formSchema: FormSchema[] = [
     field: 'medicationType',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"medicationZhiliaoCata"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -134,7 +134,7 @@ export const formSchema: FormSchema[] = [
     field: 'usageMethod',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"shiyongWay"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -158,11 +158,11 @@ export const formSchema: FormSchema[] = [
 
 // 高级查询数据
 export const superQuerySchema = {
-  diseaseType: {title: '疾病类型',order: 0,view: 'list', type: 'string',dictCode: '',},
+  diseaseType: {title: '疾病类型',order: 0,view: 'list', type: 'string',dictCode: 'jibingWay',},
   mainSymptoms: {title: '主要症状',order: 1,view: 'text', type: 'string',},
   cause: {title: '发病原因',order: 2,view: 'text', type: 'string',},
-  medicationType: {title: '药物治疗种类',order: 3,view: 'list', type: 'string',dictCode: '',},
-  usageMethod: {title: '使用方式',order: 4,view: 'list', type: 'string',dictCode: '',},
+  medicationType: {title: '药物治疗种类',order: 3,view: 'list', type: 'string',dictCode: 'medicationZhiliaoCata',},
+  usageMethod: {title: '使用方式',order: 4,view: 'list', type: 'string',dictCode: 'shiyongWay',},
   note: {title: '治疗说明	',order: 5,view: 'text', type: 'string',},
 };
 

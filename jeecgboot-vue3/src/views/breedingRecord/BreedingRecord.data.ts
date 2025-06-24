@@ -159,7 +159,7 @@ export const formSchema: FormSchema[] = [
     field: 'method',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"peizhong-way"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -172,7 +172,7 @@ export const formSchema: FormSchema[] = [
     field: 'status',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"Peizhong-Zhuangtai"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -185,7 +185,7 @@ export const formSchema: FormSchema[] = [
     field: 'isBreeding',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"isBreeding"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -208,9 +208,9 @@ export const superQuerySchema = {
   femaleLivestockId: {title: '母畜 ID',order: 1,view: 'text', type: 'string',},
   breedingDate: {title: '配种日期',order: 2,view: 'date', type: 'string',},
   expectedDeliveryDate: {title: '预产日期',order: 3,view: 'date', type: 'string',},
-  method: {title: '配种方式（自然 / 人工）',order: 4,view: 'list', type: 'string',dictCode: '',},
-  status: {title: '配种状态（成功 / 失败）',order: 5,view: 'list', type: 'string',dictCode: '',},
-  isBreeding: {title: '是否繁育（1/0）',order: 6,view: 'list', type: 'string',dictCode: '',},
+  method: {title: '配种方式（自然 / 人工）',order: 4,view: 'list', type: 'string',dictCode: 'peizhong-way',},
+  status: {title: '配种状态（成功 / 失败）',order: 5,view: 'list', type: 'string',dictCode: 'Peizhong-Zhuangtai',},
+  isBreeding: {title: '是否繁育（1/0）',order: 6,view: 'list', type: 'string',dictCode: 'isBreeding',},
 };
 
 /**

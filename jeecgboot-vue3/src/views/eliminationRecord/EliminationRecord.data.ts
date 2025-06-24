@@ -37,41 +37,6 @@ export const columns: BasicColumn[] = [
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
-	{
-      label: "畜只 ID",
-      field: 'livestockId',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "淘汰日期",
-      field: 'eliminationDate',
-      component: 'DatePicker',
-      componentProps: {
-        valueFormat: 'YYYY-MM-DD'
-      },
-      //colProps: {span: 6},
- 	},
-	{
-      label: "淘汰前类别",
-      field: 'beforeCategory',
-      component: 'JSelectMultiple',
-      componentProps:{
-      },
-      //colProps: {span: 6},
- 	},
-	{
-      label: "淘汰原因",
-      field: 'eliminationReason',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "说明",
-      field: 'note',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
 ];
 //表单数据
 export const formSchema: FormSchema[] = [
@@ -103,7 +68,7 @@ export const formSchema: FormSchema[] = [
     field: 'beforeCategory',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"leibie"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -139,7 +104,7 @@ export const formSchema: FormSchema[] = [
 export const superQuerySchema = {
   livestockId: {title: '畜只 ID',order: 0,view: 'text', type: 'string',},
   eliminationDate: {title: '淘汰日期',order: 1,view: 'date', type: 'string',},
-  beforeCategory: {title: '淘汰前类别',order: 2,view: 'list', type: 'string',dictCode: '',},
+  beforeCategory: {title: '淘汰前类别',order: 2,view: 'list', type: 'string',dictCode: 'leibie',},
   eliminationReason: {title: '淘汰原因',order: 3,view: 'text', type: 'string',},
   note: {title: '说明',order: 4,view: 'text', type: 'string',},
 };

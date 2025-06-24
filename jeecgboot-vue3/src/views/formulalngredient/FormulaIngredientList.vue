@@ -4,9 +4,9 @@
    <BasicTable @register="registerTable" :rowSelection="rowSelection">
      <!--插槽:table标题-->
       <template #tableTitle>
-          <a-button type="primary" v-auth="'course:num_course:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-          <a-button  type="primary" v-auth="'course:num_course:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-          <j-upload-button type="primary" v-auth="'course:num_course:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+          <a-button type="primary" v-auth="'formulaIngredient:formula_ingredient:add'" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
+          <a-button  type="primary" v-auth="'formulaIngredient:formula_ingredient:exportXls'" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+          <j-upload-button type="primary" v-auth="'formulaIngredient:formula_ingredient:importExcel'" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
           <a-dropdown v-if="selectedRowKeys.length > 0">
               <template #overlay>
                 <a-menu>
@@ -16,7 +16,7 @@
                   </a-menu-item>
                 </a-menu>
               </template>
-              <a-button v-auth="'course:num_course:deleteBatch'">批量操作
+              <a-button v-auth="'formulaIngredient:formula_ingredient:deleteBatch'">批量操作
                 <Icon icon="mdi:chevron-down"></Icon>
               </a-button>
         </a-dropdown>
@@ -32,18 +32,18 @@
       </template>
     </BasicTable>
     <!-- 表单区域 -->
-    <CourseModal @register="registerModal" @success="handleSuccess"></CourseModal>
+    <FormulaIngredientModal @register="registerModal" @success="handleSuccess"></FormulaIngredientModal>
   </div>
 </template>
 
-<script lang="ts" name="course-course" setup>
+<script lang="ts" name="formulaIngredient-formulaIngredient" setup>
   import {ref, reactive, computed, unref} from 'vue';
   import {BasicTable, useTable, TableAction} from '/@/components/Table';
   import {useModal} from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage'
-  import CourseModal from './components/CourseModal.vue'
-  import {columns, searchFormSchema, superQuerySchema} from './Course.data';
-  import {list, deleteOne, batchDelete, getImportUrl,getExportUrl} from './Course.api';
+  import FormulaIngredientModal from './components/FormulaIngredientModal.vue'
+  import {columns, searchFormSchema, superQuerySchema} from './FormulaIngredient.data';
+  import {list, deleteOne, batchDelete, getImportUrl,getExportUrl} from './FormulaIngredient.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
   import { useUserStore } from '/@/store/modules/user';
   const queryParam = reactive<any>({});
@@ -54,7 +54,7 @@
   //注册table数据
   const { prefixCls,tableContext,onExportXls,onImportXls } = useListPage({
       tableProps:{
-           title: '课程信息表',
+           title: '配方原料表',
            api: list,
            columns,
            canResize:false,
@@ -77,7 +77,7 @@
             },
       },
        exportConfig: {
-            name:"课程信息表",
+            name:"配方原料表",
             url: getExportUrl,
             params: queryParam,
           },
@@ -156,7 +156,7 @@
          {
            label: '编辑',
            onClick: handleEdit.bind(null, record),
-           auth: 'course:num_course:edit'
+           auth: 'formulaIngredient:formula_ingredient:edit'
          }
        ]
    }
@@ -175,7 +175,7 @@
              confirm: handleDelete.bind(null, record),
              placement: 'topLeft',
            },
-           auth: 'course:num_course:delete'
+           auth: 'formulaIngredient:formula_ingredient:delete'
          }
        ]
    }

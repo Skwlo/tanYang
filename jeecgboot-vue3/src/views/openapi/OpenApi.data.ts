@@ -68,11 +68,6 @@ export const formSchema: FormSchema[] = [
      },
   },
   {
-    label: '原始地址',
-    field: 'originUrl',
-    component: 'Input',
-  },
-  {
     label: '请求方法',
     field: 'requestMethod',
     component: 'JSearchSelect',
@@ -131,6 +126,11 @@ export const formSchema: FormSchema[] = [
     label: '请求体内容',
     component:"Input",
     field: 'body'
+  },
+  {
+    label: '原始地址',
+    field: 'originUrl',
+    component: 'Input',
   },
   {
     label: '删除标识',
@@ -252,6 +252,7 @@ export const openApiHeaderJVxeColumns: JVxeColumn[] = [
       title: '备注',
       key: 'note',
       type: JVxeTypes.input,
+      width:"200px",
       placeholder: '请输入${title}',
       defaultValue:'',
     },
@@ -296,6 +297,7 @@ export const openApiParamJVxeColumns: JVxeColumn[] = [
       title: '备注',
       key: 'note',
       type: JVxeTypes.input,
+      width:"200px",
       placeholder: '请输入${title}',
       defaultValue:'',
     },

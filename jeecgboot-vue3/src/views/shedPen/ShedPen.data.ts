@@ -30,6 +30,11 @@ export const columns: BasicColumn[] = [
     align:"center",
     dataIndex: 'note'
    },
+   {
+    title: '棚栏 ID',
+    align:"center",
+    dataIndex: 'shedPenId'
+   },
 ];
 //查询数据
 export const searchFormSchema: FormSchema[] = [
@@ -65,6 +70,12 @@ export const searchFormSchema: FormSchema[] = [
       component: 'Input',
       //colProps: {span: 6},
  	},
+	{
+      label: "棚栏 ID",
+      field: 'shedPenId',
+      component: 'Input',
+      //colProps: {span: 6},
+ 	},
 ];
 //表单数据
 export const formSchema: FormSchema[] = [
@@ -83,7 +94,7 @@ export const formSchema: FormSchema[] = [
     field: 'type',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"Changpengway"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -116,6 +127,16 @@ export const formSchema: FormSchema[] = [
     field: 'note',
     component: 'Input',
   },
+  {
+    label: '棚栏 ID',
+    field: 'shedPenId',
+    component: 'Input',
+    dynamicRules: ({model,schema}) => {
+          return [
+                 { required: true, message: '请输入棚栏 ID!'},
+          ];
+     },
+  },
 	// TODO 主键隐藏字段，目前写死为ID
 	{
 	  label: '',
@@ -128,10 +149,11 @@ export const formSchema: FormSchema[] = [
 // 高级查询数据
 export const superQuerySchema = {
   name: {title: '名称',order: 0,view: 'text', type: 'string',},
-  type: {title: '类型（场 / 棚 / 栏）',order: 1,view: 'list', type: 'string',dictCode: '',},
+  type: {title: '类型（场 / 棚 / 栏）',order: 1,view: 'list', type: 'string',dictCode: 'Changpengway',},
   parentId: {title: '父级 ID（场无父级，棚父级为场，栏父级为棚）',order: 2,view: 'text', type: 'string',},
   capacity: {title: '容量（可容纳畜只数量）',order: 3,view: 'number', type: 'number',},
   note: {title: '说明',order: 4,view: 'text', type: 'string',},
+  shedPenId: {title: '棚栏 ID',order: 5,view: 'text', type: 'string',},
 };
 
 /**

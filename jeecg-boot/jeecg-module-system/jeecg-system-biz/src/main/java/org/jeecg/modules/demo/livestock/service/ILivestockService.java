@@ -11,4 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ILivestockService extends IService<Livestock> {
 
+    // 添加根据livestockId查询的方法
+    Livestock getByLivestockId(String livestockId);
 }

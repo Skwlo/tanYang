@@ -107,7 +107,7 @@ export const formSchema: FormSchema[] = [
     field: 'offspringCount',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"chanzanNumber"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -120,7 +120,7 @@ export const formSchema: FormSchema[] = [
     field: 'liveOffspringCount',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"huozaiNumber"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -133,7 +133,7 @@ export const formSchema: FormSchema[] = [
     field: 'status',
     component: 'JDictSelectTag',
     componentProps:{
-        dictCode:""
+        dictCode:"huozaiStatue"
      },
     dynamicRules: ({model,schema}) => {
           return [
@@ -154,9 +154,9 @@ export const formSchema: FormSchema[] = [
 export const superQuerySchema = {
   breedingId: {title: '配种记录 ID',order: 0,view: 'text', type: 'string',},
   reproductionDate: {title: '产崽日期',order: 1,view: 'date', type: 'string',},
-  offspringCount: {title: '产崽数量',order: 2,view: 'number', type: 'number',dictCode: '',},
-  liveOffspringCount: {title: '活崽数量',order: 3,view: 'number', type: 'number',dictCode: '',},
-  status: {title: '产崽状态（正常 / 难产）',order: 4,view: 'list', type: 'string',dictCode: '',},
+  offspringCount: {title: '产崽数量',order: 2,view: 'number', type: 'number',dictCode: 'chanzanNumber',},
+  liveOffspringCount: {title: '活崽数量',order: 3,view: 'number', type: 'number',dictCode: 'huozaiNumber',},
+  status: {title: '产崽状态（正常 / 难产）',order: 4,view: 'list', type: 'string',dictCode: 'huozaiStatue',},
 };
 
 /**
