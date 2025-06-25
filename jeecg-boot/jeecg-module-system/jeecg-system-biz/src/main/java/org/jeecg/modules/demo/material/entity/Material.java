@@ -62,6 +62,7 @@ public class Material implements Serializable {
     private String name;
 	/**物资类型（饲料 / 药品 / 疫苗）*/
 	@Excel(name = "物资类型（饲料 / 药品 / 疫苗）", width = 15)
+    @Dict(dicCode = "wuzileixing")
     @Schema(description = "物资类型（饲料 / 药品 / 疫苗）")
     private String type;
 	/**规格含量*/
@@ -78,6 +79,7 @@ public class Material implements Serializable {
     private Integer alertQuantity;
 	/**是否是药品疫苗（1/0）*/
 	@Excel(name = "是否是药品疫苗（1/0）", width = 15)
+    @Dict(dicCode = "yaopinyimiao")
     @Schema(description = "是否是药品疫苗（1/0）")
     private String isMedicine;
 	/**有效期天数（用于计算过期时间）*/

@@ -62,6 +62,7 @@ public class ShedPen implements Serializable {
     private String name;
 	/**类型（场 / 棚 / 栏）*/
 	@Excel(name = "类型（场 / 棚 / 栏）", width = 15)
+    @Dict(dicCode = "Changpengway")
     @Schema(description = "类型（场 / 棚 / 栏）")
     private String type;
 	/**父级 ID（场无父级，棚父级为场，栏父级为棚）*/

@@ -72,6 +72,7 @@ public class FeedingRecord implements Serializable {
     private String formulaId;
 	/**投料类别（精料 / 粗料）*/
 	@Excel(name = "投料类别（精料 / 粗料）", width = 15)
+    @Dict(dicCode = "touliao")
     @Schema(description = "投料类别（精料 / 粗料）")
     private String feedType;
 	/**喂食数量 (kg)*/
@@ -80,6 +81,7 @@ public class FeedingRecord implements Serializable {
     private BigDecimal quantity;
 	/**操作人*/
 	@Excel(name = "操作人", width = 15)
+    @Dict(dicCode = "caozuoren")
     @Schema(description = "操作人")
     private String operator;
 }

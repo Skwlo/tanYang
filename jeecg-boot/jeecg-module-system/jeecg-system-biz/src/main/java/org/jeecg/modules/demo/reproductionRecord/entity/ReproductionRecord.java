@@ -68,14 +68,17 @@ public class ReproductionRecord implements Serializable {
     private Date reproductionDate;
 	/**产崽数量*/
 	@Excel(name = "产崽数量", width = 15)
+    @Dict(dicCode = "chanzanNumber")
     @Schema(description = "产崽数量")
     private Integer offspringCount;
 	/**活崽数量*/
 	@Excel(name = "活崽数量", width = 15)
+    @Dict(dicCode = "huozaiNumber")
     @Schema(description = "活崽数量")
     private Integer liveOffspringCount;
 	/**产崽状态（正常 / 难产）*/
 	@Excel(name = "产崽状态（正常 / 难产）", width = 15)
+    @Dict(dicCode = "huozaiStatue")
     @Schema(description = "产崽状态（正常 / 难产）")
     private String status;
 }

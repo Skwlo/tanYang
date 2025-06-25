@@ -68,10 +68,12 @@ public class LivestockTypeChange implements Serializable {
     private Date changeDate;
 	/**原类型*/
 	@Excel(name = "原类型", width = 15)
+    @Dict(dicCode = "leibie")
     @Schema(description = "原类型")
     private String oldType;
 	/**新类型*/
 	@Excel(name = "新类型", width = 15)
+    @Dict(dicCode = "leibie")
     @Schema(description = "新类型")
     private String newType;
 	/**变更原因*/

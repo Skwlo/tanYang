@@ -84,6 +84,7 @@ public class VaccinationRecord implements Serializable {
     private String standard;
 	/**免疫范围（个体 / 群体）*/
 	@Excel(name = "免疫范围（个体 / 群体）", width = 15)
+    @Dict(dicCode = "mianyiFanwei")
     @Schema(description = "免疫范围（个体 / 群体）")
     private String scope;
 	/**说明*/

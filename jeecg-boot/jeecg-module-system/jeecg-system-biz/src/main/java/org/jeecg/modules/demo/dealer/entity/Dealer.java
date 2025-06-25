@@ -62,6 +62,7 @@ public class Dealer implements Serializable {
     private String name;
 	/**销售类型（饲料 / 药品 / 畜只）*/
 	@Excel(name = "销售类型（饲料 / 药品 / 畜只）", width = 15)
+    @Dict(dicCode = "xiangshouWay")
     @Schema(description = "销售类型（饲料 / 药品 / 畜只）")
     private String type;
 	/**地址*/

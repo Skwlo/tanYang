@@ -68,6 +68,7 @@ public class BodyMeasurement implements Serializable {
     private Date measureDate;
 	/**测量阶段（羔羊期 / 育肥期等）*/
 	@Excel(name = "测量阶段（羔羊期 / 育肥期等）", width = 15)
+    @Dict(dicCode = "celiangjieduan")
     @Schema(description = "测量阶段（羔羊期 / 育肥期等）")
     private String measureStage;
 	/**月龄*/

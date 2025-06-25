@@ -62,6 +62,7 @@ public class Formula implements Serializable {
     private String name;
 	/**适用阶段（幼崽 / 育肥 / 成年）*/
 	@Excel(name = "适用阶段（幼崽 / 育肥 / 成年）", width = 15)
+    @Dict(dicCode = "dangqianjieduan")
     @Schema(description = "适用阶段（幼崽 / 育肥 / 成年）")
     private String applicableStage;
 	/**配方说明*/

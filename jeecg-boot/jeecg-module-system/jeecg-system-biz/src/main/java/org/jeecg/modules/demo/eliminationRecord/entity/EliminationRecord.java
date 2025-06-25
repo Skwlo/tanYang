@@ -68,6 +68,7 @@ public class EliminationRecord implements Serializable {
     private Date eliminationDate;
 	/**淘汰前类别*/
 	@Excel(name = "淘汰前类别", width = 15)
+    @Dict(dicCode = "leibie")
     @Schema(description = "淘汰前类别")
     private String beforeCategory;
 	/**淘汰原因*/

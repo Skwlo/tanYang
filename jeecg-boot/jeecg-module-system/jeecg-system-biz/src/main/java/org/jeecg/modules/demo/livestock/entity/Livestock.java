@@ -66,14 +66,17 @@ public class Livestock implements Serializable {
     private String electronicEarTag;
 	/**品种（如滩羊）*/
 	@Excel(name = "品种（如滩羊）", width = 15)
+    @Dict(dicCode = "pinzhong")
     @Schema(description = "品种（如滩羊）")
     private String breed;
 	/**类别（种羊、肉羊等）*/
 	@Excel(name = "类别（种羊、肉羊等）", width = 15)
+    @Dict(dicCode = "leibie")
     @Schema(description = "类别（种羊、肉羊等）")
     private String category;
 	/**性别（M/F）*/
 	@Excel(name = "性别（M/F）", width = 15)
+    @Dict(dicCode = "xingbie")
     @Schema(description = "性别（M/F）")
     private String gender;
 	/**出生日期*/
@@ -84,14 +87,17 @@ public class Livestock implements Serializable {
     private Date birthDate;
 	/**来源（采购 / 自繁）*/
 	@Excel(name = "来源（采购 / 自繁）", width = 15)
+    @Dict(dicCode = "laiyuan")
     @Schema(description = "来源（采购 / 自繁）")
     private String source;
 	/**状态（正常 / 死亡 / 淘汰 / 已售）*/
 	@Excel(name = "状态（正常 / 死亡 / 淘汰 / 已售）", width = 15)
+    @Dict(dicCode = "zhuangtai")
     @Schema(description = "状态（正常 / 死亡 / 淘汰 / 已售）")
     private String status;
 	/**当前阶段（幼崽 / 育肥 / 成年）*/
 	@Excel(name = "当前阶段（幼崽 / 育肥 / 成年）", width = 15)
+    @Dict(dicCode = "dangqianjieduan")
     @Schema(description = "当前阶段（幼崽 / 育肥 / 成年）")
     private String currentStage;
 	/**当前所在栅栏ID*/

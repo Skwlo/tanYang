@@ -58,6 +58,7 @@ public class TreatmentPlan implements Serializable {
     private String sysOrgCode;
 	/**疾病类型*/
 	@Excel(name = "疾病类型", width = 15)
+    @Dict(dicCode = "jibingWay")
     @Schema(description = "疾病类型")
     private String diseaseType;
 	/**主要症状*/
@@ -70,10 +71,12 @@ public class TreatmentPlan implements Serializable {
     private String cause;
 	/**药物治疗种类*/
 	@Excel(name = "药物治疗种类", width = 15)
+    @Dict(dicCode = "medicationZhiliaoCata")
     @Schema(description = "药物治疗种类")
     private String medicationType;
 	/**使用方式*/
 	@Excel(name = "使用方式", width = 15)
+    @Dict(dicCode = "shiyongWay")
     @Schema(description = "使用方式")
     private String usageMethod;
 	/**治疗说明	*/

@@ -68,6 +68,7 @@ public class DiseaseTreatmentRecord implements Serializable {
     private Date onsetDate;
 	/**疾病类型*/
 	@Excel(name = "疾病类型", width = 15)
+    @Dict(dicCode = "jibingWay")
     @Schema(description = "疾病类型")
     private String diseaseType;
 	/**主要症状*/
@@ -88,6 +89,7 @@ public class DiseaseTreatmentRecord implements Serializable {
     private String veterinarian;
 	/**是否治愈（1/0）	*/
 	@Excel(name = "是否治愈（1/0）	", width = 15)
+    @Dict(dicCode = "shifouzhiyu")
     @Schema(description = "是否治愈（1/0）	")
     private String isCured;
 	/**治疗说明*/

@@ -78,14 +78,17 @@ public class BreedingRecord implements Serializable {
     private Date expectedDeliveryDate;
 	/**配种方式（自然 / 人工）*/
 	@Excel(name = "配种方式（自然 / 人工）", width = 15)
+    @Dict(dicCode = "peizhong-way")
     @Schema(description = "配种方式（自然 / 人工）")
     private String method;
 	/**配种状态（成功 / 失败）*/
 	@Excel(name = "配种状态（成功 / 失败）", width = 15)
+    @Dict(dicCode = "Peizhong-Zhuangtai")
     @Schema(description = "配种状态（成功 / 失败）")
     private String status;
 	/**是否繁育（1/0）*/
 	@Excel(name = "是否繁育（1/0）", width = 15)
+    @Dict(dicCode = "isBreeding")
     @Schema(description = "是否繁育（1/0）")
     private String isBreeding;
 }
