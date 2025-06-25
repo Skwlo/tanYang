@@ -59,7 +59,6 @@
            columns,
            canResize:false,
            formConfig: {
-              //labelWidth: 120,
               schemas: searchFormSchema,
               autoSubmitOnEnter:true,
               showAdvancedButton:true,

@@ -1,9 +1,6 @@
 package org.jeecg.modules.demo.formulaIngredient.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -14,6 +11,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.query.QueryRuleEnum;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.demo.formula.service.IFormulaService;
 import org.jeecg.modules.demo.formulaIngredient.entity.FormulaIngredient;
 import org.jeecg.modules.demo.formulaIngredient.service.IFormulaIngredientService;
 
@@ -52,7 +50,10 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class FormulaIngredientController extends JeecgController<FormulaIngredient, IFormulaIngredientService> {
 	@Autowired
 	private IFormulaIngredientService formulaIngredientService;
-	
+
+	@Autowired
+	private IFormulaService formulaService;
+
 	/**
 	 * 分页列表查询
 	 *
@@ -74,7 +75,7 @@ public class FormulaIngredientController extends JeecgController<FormulaIngredie
 		IPage<FormulaIngredient> pageList = formulaIngredientService.page(page, queryWrapper);
 		return Result.OK(pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -86,10 +87,23 @@ public class FormulaIngredientController extends JeecgController<FormulaIngredie
 	@RequiresPermissions("formulaIngredient:formula_ingredient:add")
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody FormulaIngredient formulaIngredient) {
-		formulaIngredientService.save(formulaIngredient);
-		return Result.OK("添加成功！");
+		try {
+			// 校验关联配方是否存在
+			if (formulaService.getById(formulaIngredient.getFormulaId()) == null) {
+				return Result.error("关联的配方不存在");
+			}
+
+			// 自动填充创建时间
+			formulaIngredient.setCreateTime(new Date());
+
+			formulaIngredientService.save(formulaIngredient);
+			return Result.OK("添加成功！");
+		} catch (Exception e) {
+			log.error("添加配方原料失败: {}", e.getMessage(), e);
+			return Result.error("添加失败，系统异常");
+		}
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -101,10 +115,25 @@ public class FormulaIngredientController extends JeecgController<FormulaIngredie
 	@RequiresPermissions("formulaIngredient:formula_ingredient:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody FormulaIngredient formulaIngredient) {
-		formulaIngredientService.updateById(formulaIngredient);
-		return Result.OK("编辑成功!");
+		try {
+			// 校验记录是否存在
+			FormulaIngredient oldIngredient = formulaIngredientService.getById(formulaIngredient.getId());
+			if (oldIngredient == null) {
+				return Result.error("配方原料记录不存在");
+			}
+
+			// 保留原始创建时间，更新修改时间
+			formulaIngredient.setCreateTime(oldIngredient.getCreateTime());
+			formulaIngredient.setUpdateTime(new Date());
+
+			formulaIngredientService.updateById(formulaIngredient);
+			return Result.OK("编辑成功!");
+		} catch (Exception e) {
+			log.error("编辑配方原料失败: {}", e.getMessage(), e);
+			return Result.error("编辑失败，系统异常");
+		}
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -116,10 +145,23 @@ public class FormulaIngredientController extends JeecgController<FormulaIngredie
 	@RequiresPermissions("formulaIngredient:formula_ingredient:delete")
 	@DeleteMapping(value = "/delete")
 	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
-		formulaIngredientService.removeById(id);
-		return Result.OK("删除成功!");
+		try {
+			// 校验原料记录是否存在
+			FormulaIngredient ingredient = formulaIngredientService.getById(id);
+			if (ingredient == null) {
+				return Result.error("配方原料记录不存在");
+			}
+
+			// 执行删除
+			formulaIngredientService.removeById(id);
+
+			return Result.OK("删除成功!");
+		} catch (Exception e) {
+			log.error("删除配方原料失败: {}", e.getMessage(), e);
+			return Result.error("删除失败，系统异常");
+		}
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -131,10 +173,22 @@ public class FormulaIngredientController extends JeecgController<FormulaIngredie
 	@RequiresPermissions("formulaIngredient:formula_ingredient:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.formulaIngredientService.removeByIds(Arrays.asList(ids.split(",")));
-		return Result.OK("批量删除成功!");
+		try {
+			List<String> idList = Arrays.asList(ids.split(","));
+
+			// 查询所有要删除的原料，用于后续统计
+			List<FormulaIngredient> ingredients = formulaIngredientService.listByIds(idList);
+
+			// 执行批量删除
+			boolean result = formulaIngredientService.removeByIds(idList);
+
+			return result ? Result.OK("批量删除成功!") : Result.error("批量删除失败");
+		} catch (Exception e) {
+			log.error("批量删除配方原料失败: {}", e.getMessage(), e);
+			return Result.error("批量删除失败，系统异常");
+		}
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
