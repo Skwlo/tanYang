@@ -68,7 +68,8 @@ export const searchFormSchema: FormSchema[] = [
       field: 'feedType',
       component: 'JSelectMultiple',
       componentProps:{
-      },
+      dictCode:"touliao"
+    },
       //colProps: {span: 6},
  	},
 	{
@@ -82,7 +83,8 @@ export const searchFormSchema: FormSchema[] = [
       field: 'operator',
       component: 'JSelectMultiple',
       componentProps:{
-      },
+      dictCode:"caozuoren"
+    },
       //colProps: {span: 6},
  	},
 ];

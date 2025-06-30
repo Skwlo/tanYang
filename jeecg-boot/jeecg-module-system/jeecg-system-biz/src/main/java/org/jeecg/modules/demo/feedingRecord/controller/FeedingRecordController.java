@@ -13,8 +13,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.demo.formula.entity.Formula;
+import org.jeecg.modules.demo.formula.service.IFormulaService;
+import org.jeecg.modules.demo.formulaIngredient.entity.FormulaIngredient;
+import org.jeecg.modules.demo.formulaIngredient.service.IFormulaIngredientService;
 import org.jeecg.modules.demo.inventory.entity.Inventory;
 import org.jeecg.modules.demo.inventory.service.IInventoryService;
+import org.jeecg.modules.demo.shedPen.entity.ShedPen;
+import org.jeecg.modules.demo.shedPen.service.IShedPenService;
 import org.jeecg.modules.demo.stockOut.entity.StockOut;
 import org.jeecg.modules.demo.stockOut.service.IStockOutService;
 import org.jeecg.common.system.base.controller.JeecgController;
@@ -45,6 +51,12 @@ public class FeedingRecordController extends JeecgController<FeedingRecord, IFee
 
 	 @Autowired
 	 private IInventoryService inventoryService;
+
+	 @Autowired
+	 private IShedPenService shedPenService;
+	 @Autowired
+	 private IFormulaIngredientService formulaIngredientService;
+
 	/**
 	 * 分页列表查询
 	 *
@@ -85,6 +97,38 @@ public class FeedingRecordController extends JeecgController<FeedingRecord, IFee
 	public Result<String> add(@RequestBody FeedingRecord feedingRecord) {
 		// 1. 保存喂食记录
 		feedingRecordService.save (feedingRecord);
+
+		// 校验喂食棚栏 ID 是否存在于 ShedPen 表的 shed_pen_id 字段
+		QueryWrapper<ShedPen> shedPenQuery = new QueryWrapper<>();
+		shedPenQuery.eq("shed_pen_id", feedingRecord.getShedPenId());
+		if (!shedPenService.exists(shedPenQuery)) {
+			throw new RuntimeException("喂食棚栏 ID 不存在，无法完成喂食记录添加");
+		}
+
+		// 校验使用配方 ID 是否存在于 FormulaIngredient 表的 formulaId 字段
+		QueryWrapper<FormulaIngredient> formulaQuery = new QueryWrapper<>();
+		formulaQuery.eq("material_id", feedingRecord.getFormulaId());
+		if (!formulaIngredientService.exists(formulaQuery)) {
+			throw new RuntimeException("使用配方 ID 不存在，无法完成喂食记录添加");
+		}
+
+		// 喂食数量是否为空
+		if (feedingRecord.getQuantity() == null) {
+			throw new RuntimeException("喂食数量不能为空");
+		}
+
+		// 喂食数量是否为负
+		if (feedingRecord.getQuantity().compareTo(BigDecimal.ZERO) <= 0) {
+			throw new RuntimeException("喂食数量必须大于0");
+		}
+
+
+		// 限制最大喂食量（示例：限制为不超过1000kg，可根据实际业务调整）
+		BigDecimal maxQuantity = new BigDecimal("1000");
+		if (feedingRecord.getQuantity().compareTo(maxQuantity) > 0) {
+			throw new RuntimeException("喂食数量不能超过" + maxQuantity + "kg");
+		}
+
 // 2. 校验饲料库存 (使用 materialId 关联库存表)
 		QueryWrapper<Inventory> inventoryQuery = new QueryWrapper<>();
 		inventoryQuery.eq ("material_id", feedingRecord.getFormulaId ()); // 假设配方 ID 对应物资 ID

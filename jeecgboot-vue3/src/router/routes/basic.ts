@@ -1,3 +1,11 @@
+/*
+ * @Author: kelemengqi 1565916105@qq.com
+ * @Date: 2025-06-09 09:22:21
+ * @LastEditors: kelemengqi 1565916105@qq.com
+ * @LastEditTime: 2025-06-26 09:46:04
+ * @FilePath: /JeecgBoot-master/jeecgboot-vue3/src/router/routes/basic.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import type { AppRouteRecordRaw } from '/@/router/types';
 import { t } from '/@/hooks/web/useI18n';
 import { REDIRECT_NAME, LAYOUT, EXCEPTION_COMPONENT, PAGE_NOT_FOUND_NAME, PAGE_NOT_FOUND_NAME_404 } from '/@/router/constant';

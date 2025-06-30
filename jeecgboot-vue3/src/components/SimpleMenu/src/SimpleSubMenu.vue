@@ -1,6 +1,7 @@
 <template>
   <MenuItem :name="item.path" v-if="!menuHasChildren(item) && getShowMenu" v-bind="$props" :class="getLevelClass">
-    <Icon v-if="getIcon" :icon="getIcon" :size="16" />
+    <Icon v-if="getIcon && getIcon.startsWith('ant-design:')" :icon="getIcon" :size="16" />
+    <SvgIcon v-if="getIcon && !getIcon.startsWith('ant-design:')" :name="getIcon" :size="16" />
     <div v-if="collapsedShowTitle && getIsCollapseParent" class="mt-1 collapse-title">
       {{ getI18nName }}
     </div>
@@ -19,7 +20,8 @@
     :collapsedShowTitle="collapsedShowTitle"
   >
     <template #title>
-      <Icon v-if="getIcon" :icon="getIcon" :size="16" />
+      <Icon v-if="getIcon && getIcon.startsWith('ant-design:')" :icon="getIcon" :size="16" />
+      <SvgIcon v-if="getIcon && !getIcon.startsWith('ant-design:')" :name="getIcon" :size="16" />
 
       <div v-if="collapsedShowTitle && getIsCollapseParent" class="mt-2 collapse-title">
         {{ getI18nName }}
@@ -37,11 +39,11 @@
 </template>
 <script lang="ts">
   import type { PropType } from 'vue';
+  import { computed, defineComponent } from 'vue';
   import type { Menu } from '/@/router/types';
-
-  import { defineComponent, computed } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import Icon from '/@/components/Icon/index';
+  import SvgIcon from '@/components/Icon/src/SvgIcon.vue';
   import { checkChildrenHidden } from '/@/utils/common/compUtils';
   import MenuItem from './components/MenuItem.vue';
   import SubMenu from './components/SubMenuItem.vue';
@@ -56,6 +58,7 @@
       MenuItem,
       SimpleMenuTag: createAsyncComponent(() => import('./SimpleMenuTag.vue')),
       Icon,
+      SvgIcon,
     },
     props: {
       item: {
@@ -96,8 +99,8 @@
           !menuTreeItem.meta?.hideChildrenInMenu &&
           Reflect.has(menuTreeItem, 'children') &&
           !!menuTreeItem.children &&
-          menuTreeItem.children.length > 0
-          &&checkChildrenHidden(menuTreeItem)
+          menuTreeItem.children.length > 0 &&
+          checkChildrenHidden(menuTreeItem)
         );
       }
 

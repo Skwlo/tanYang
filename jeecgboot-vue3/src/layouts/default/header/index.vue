@@ -35,6 +35,9 @@
 
       <AppLocalePicker v-if="getShowLocalePicker" :reload="true" :showText="false" :class="`${prefixCls}-action__item`" />
 
+      <!-- 新增牛牛管理按钮 -->
+      <a-button type="primary" @click="goCowPage" class="ml-2" style="margin-left: 8px;">牛牛管理</a-button>
+
       <UserDropDown :theme="getHeaderTheme" />
 
       <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" />
@@ -75,6 +78,8 @@
   import { useUserStore } from '/@/store/modules/user';
   import { useI18n } from '/@/hooks/web/useI18n';
   import Aide from "@/views/dashboard/ai/components/aide/index.vue"
+  import { useRouter } from 'vue-router';
+
   const { t } = useI18n();
 
   export default defineComponent({
@@ -107,6 +112,7 @@
       const { getShowTopMenu, getShowHeaderTrigger, getSplit, getIsMixMode, getMenuWidth, getIsMixSidebar } = useMenuSetting();
       const { getUseErrorHandle, getShowSettingButton, getSettingButtonPosition } = useRootSetting();
       const { title } = useGlobSetting();
+      const router = useRouter();
 
       const {
         getHeaderTheme,
@@ -184,6 +190,11 @@
         console.log('成功。。。。。');
       }
 
+      // 新增牛牛管理跳转方法
+      function goCowPage() {
+        router.push('/cow');
+      }
+
       onMounted(() => {
         showLoginSelect();
       });
@@ -215,7 +226,8 @@
         loginSelectOk,
         loginSelectRef,
         title,
-        t
+        t,
+        goCowPage
       };
     },
   });

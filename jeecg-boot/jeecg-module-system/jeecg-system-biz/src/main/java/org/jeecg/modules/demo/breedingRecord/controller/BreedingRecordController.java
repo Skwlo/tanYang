@@ -52,7 +52,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class BreedingRecordController extends JeecgController<BreedingRecord, IBreedingRecordService> {
 	@Autowired
 	private IBreedingRecordService breedingRecordService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -74,13 +74,13 @@ public class BreedingRecordController extends JeecgController<BreedingRecord, IB
         // 自定义多选的查询规则为：LIKE_WITH_OR
         customeRuleMap.put("method", QueryRuleEnum.LIKE_WITH_OR);
         customeRuleMap.put("status", QueryRuleEnum.LIKE_WITH_OR);
-        customeRuleMap.put("isBreeding", QueryRuleEnum.LIKE_WITH_OR);
+        customeRuleMap.put("isBreeding", QueryRuleEnum.GT);
         QueryWrapper<BreedingRecord> queryWrapper = QueryGenerator.initQueryWrapper(breedingRecord, req.getParameterMap(),customeRuleMap);
 		Page<BreedingRecord> page = new Page<BreedingRecord>(pageNo, pageSize);
 		IPage<BreedingRecord> pageList = breedingRecordService.page(page, queryWrapper);
 		return Result.OK(pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -95,7 +95,7 @@ public class BreedingRecordController extends JeecgController<BreedingRecord, IB
 		breedingRecordService.save(breedingRecord);
 		return Result.OK("添加成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -110,7 +110,7 @@ public class BreedingRecordController extends JeecgController<BreedingRecord, IB
 		breedingRecordService.updateById(breedingRecord);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -125,7 +125,7 @@ public class BreedingRecordController extends JeecgController<BreedingRecord, IB
 		breedingRecordService.removeById(id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -140,7 +140,7 @@ public class BreedingRecordController extends JeecgController<BreedingRecord, IB
 		this.breedingRecordService.removeByIds(Arrays.asList(ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *

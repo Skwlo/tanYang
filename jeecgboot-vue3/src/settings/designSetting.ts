@@ -12,10 +12,10 @@ export const APP_PRESET_COLOR_LIST: string[] = [
   '#536dfe',
   '#ff5c93',
   '#13c2c2',
-  '#52c41a',
+  '#9def6e',
   '#ee4f12',
   '#0096c7',
-  '#9c27b0',
+  '#ffffff',
   '#ff9800',
 ];
 
@@ -30,7 +30,7 @@ export const HEADER_PRESET_BG_COLOR_LIST: string[] = [
   '#e74c3c',
   '#52c41a',
   '#394664',
-  '#faad14',
+  '#92f40d',
   '#383f45',
 ];
 
