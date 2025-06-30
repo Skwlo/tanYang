@@ -70,7 +70,7 @@ const setting: ProjectConfig = {
   // 头部配置
   headerSetting: {
     // 背景色
-    bgColor: HEADER_PRESET_BG_COLOR_LIST[4],
+    bgColor: HEADER_PRESET_BG_COLOR_LIST[0],
     // 固定头部
     fixed: true,
     // 是否显示顶部
@@ -128,7 +128,7 @@ const setting: ProjectConfig = {
     accordion: true,
     // 在路由切换的时候关闭左侧混合菜单展开菜单
     closeMixSidebarOnChange: false,
-    // 左侧混合菜单模块切换触发方式 ‘click’ |'hover'
+    // 左侧混合菜单模块切换触发方式 'click' |'hover'
     mixSideTrigger: MixSidebarTriggerEnum.CLICK,
     // 是否固定左侧混合菜单
     mixSideFixed: false,

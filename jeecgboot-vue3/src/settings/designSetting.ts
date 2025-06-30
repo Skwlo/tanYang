@@ -6,8 +6,8 @@ export const darkMode = ThemeEnum.LIGHT;
 
 // app theme preset color
 export const APP_PRESET_COLOR_LIST: string[] = [
-  '#0960bd',
   '#1890ff',
+  '#0960bd',
   '#009688',
   '#536dfe',
   '#ff5c93',
@@ -36,11 +36,11 @@ export const HEADER_PRESET_BG_COLOR_LIST: string[] = [
 
 // sider preset color
 export const SIDE_BAR_BG_COLOR_LIST: string[] = [
+  '#ffffff',
   '#001529',
   // '#212121',
   '#009688',
   '#273352',
-  '#ffffff',
   '#191b24',
   // '#191a23',
   '#037bd5',
@@ -52,13 +52,13 @@ export const SIDE_BAR_BG_COLOR_LIST: string[] = [
   '#383f45',
 ];
 
-// sider logo line preset color [logo����ɫ]
+// sider logo line preset color [logo背景色]
 export const SIDER_LOGO_BG_COLOR_LIST: string[] = [
+  'linear-gradient(180deg, #ffffff, #ffffff)',
   'linear-gradient(180deg, #000000, #021d37)',
   // 'linear-gradient(180deg, #000000, #282828)',
   'linear-gradient(180deg, #078d80, #029184)',
   'linear-gradient(180deg, #1c253e, #2b385c)',
-  'linear-gradient(180deg, #ffffff, #ffffff)',
   'linear-gradient(180deg, #000000, #242735)',
   // 'linear-gradient(180deg, #000000, #1d1f2a)',
   'linear-gradient(180deg, #1d77bb, #188efa)',

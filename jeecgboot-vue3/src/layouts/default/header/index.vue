@@ -36,7 +36,17 @@
       <AppLocalePicker v-if="getShowLocalePicker" :reload="true" :showText="false" :class="`${prefixCls}-action__item`" />
 
       <!-- 新增牛牛管理按钮 -->
-      <a-button type="primary" @click="goCowPage" class="ml-2" style="margin-left: 8px;">牛牛管理</a-button>
+      <a-button 
+        type="primary" 
+        @click="goCowPage" 
+        class="cow-manage-btn"
+        size="middle"
+      >
+        <template #icon>
+          <span class="cow-icon">🐮</span>
+        </template>
+        牛牛管理
+      </a-button>
 
       <UserDropDown :theme="getHeaderTheme" />
 
@@ -268,5 +278,82 @@
       }
     }
     //update-end---author:scott ---date::2022-09-30  for：默认隐藏顶部菜单面包屑--------------
+  }
+
+  // 牛牛管理按钮样式
+  .cow-manage-btn {
+    margin-left: 8px;
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+
+      &::before {
+        left: 100%;
+      }
+
+      .cow-icon {
+        transform: scale(1.2) rotate(5deg);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+    }
+
+    .cow-icon {
+      display: inline-block;
+      font-size: 16px;
+      margin-right: 4px;
+      transition: all 0.3s ease;
+      animation: cowBounce 2s infinite;
+    }
+
+    @keyframes cowBounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-3px);
+      }
+      60% {
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  // 深色主题下的按钮样式
+  .@{prefix-cls}--dark {
+    .cow-manage-btn {
+      background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+      color: white;
+      
+      &:hover {
+        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        color: white;
+      }
+    }
   }
 </style>

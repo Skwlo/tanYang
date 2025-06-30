@@ -33,7 +33,7 @@ function createPageGuard(router: Router) {
   const loadedPageMap = new Map<string, boolean>();
 
   router.beforeEach(async (to) => {
-    // The page has already been loaded, it will be faster to open it again, you don’t need to do loading and other processing
+    // The page has already been loaded, it will be faster to open it again, you don't need to do loading and other processing
     to.meta.loaded = !!loadedPageMap.get(to.path);
     // Notify routing changes
     setRouteChange(to);
@@ -130,18 +130,66 @@ export function createMessageGuard(router: Router) {
   });
 }
 
+// 进度条牛头图标相关
+const COW_ICON_ID = 'nprogress-cow-icon';
+const COW_ICON_SRC = '/assets/icons/cow.svg';
+
+function insertCowIcon() {
+  let icon = document.getElementById(COW_ICON_ID);
+  if (!icon) {
+    icon = document.createElement('img');
+    icon.id = COW_ICON_ID;
+    icon.src = COW_ICON_SRC;
+    icon.className = 'cow-progress-icon';
+    document.body.appendChild(icon);
+  }
+}
+
+function removeCowIcon() {
+  const icon = document.getElementById(COW_ICON_ID);
+  if (icon) {
+    icon.remove();
+  }
+}
+
+function moveCowIcon() {
+  const bar = document.querySelector('#nprogress .bar') as HTMLElement;
+  const icon = document.getElementById(COW_ICON_ID) as HTMLElement;
+  if (bar && icon) {
+    // 获取进度条宽度
+    const barRect = bar.getBoundingClientRect();
+    // 让牛头图标跟随进度条末端
+    icon.style.left = `${barRect.left + barRect.width - 16}px`;
+    icon.style.top = `${barRect.top - 12}px`;
+  }
+}
+
+// 监听进度条动画帧
+function animateCowIcon() {
+  if (!document.getElementById(COW_ICON_ID)) return;
+  moveCowIcon();
+  requestAnimationFrame(animateCowIcon);
+}
+
 export function createProgressGuard(router: Router) {
   const { getOpenNProgress } = useTransitionSetting();
   router.beforeEach(async (to) => {
     if (to.meta.loaded) {
       return true;
     }
-    unref(getOpenNProgress) && nProgress.start();
+    if (unref(getOpenNProgress)) {
+      nProgress.start();
+      insertCowIcon();
+      requestAnimationFrame(animateCowIcon);
+    }
     return true;
   });
 
   router.afterEach(async () => {
-    unref(getOpenNProgress) && nProgress.done();
+    if (unref(getOpenNProgress)) {
+      nProgress.done();
+      removeCowIcon();
+    }
     return true;
   });
 }
