@@ -5,7 +5,8 @@ const { createConfirm } = useMessage();
 
 enum Api {
   list = '/feedingRecord/feedingRecord/list',
-  save='/feedingRecord/feedingRecord/add',
+  save='/feedingRecord/feeding' +
+    'Record/add',
   edit='/feedingRecord/feedingRecord/edit',
   deleteOne = '/feedingRecord/feedingRecord/delete',
   deleteBatch = '/feedingRecord/feedingRecord/deleteBatch',

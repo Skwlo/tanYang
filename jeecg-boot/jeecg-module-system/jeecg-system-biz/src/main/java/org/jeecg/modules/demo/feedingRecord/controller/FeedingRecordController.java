@@ -163,6 +163,38 @@ public class FeedingRecordController extends JeecgController<FeedingRecord, IFee
 	@RequiresPermissions("feedingRecord:feeding_record:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody FeedingRecord feedingRecord) {
+
+		// 校验喂食棚栏 ID 是否存在于 ShedPen 表的 shed_pen_id 字段
+		QueryWrapper<ShedPen> shedPenQuery = new QueryWrapper<>();
+		shedPenQuery.eq("shed_pen_id", feedingRecord.getShedPenId());
+		if (!shedPenService.exists(shedPenQuery)) {
+			throw new RuntimeException("喂食棚栏 ID 不存在，无法完成喂食记录添加");
+		}
+
+		// 校验使用配方 ID 是否存在于 FormulaIngredient 表的 formulaId 字段
+		QueryWrapper<FormulaIngredient> formulaQuery = new QueryWrapper<>();
+		formulaQuery.eq("material_id", feedingRecord.getFormulaId());
+		if (!formulaIngredientService.exists(formulaQuery)) {
+			throw new RuntimeException("使用配方 ID 不存在，无法完成喂食记录添加");
+		}
+
+		// 喂食数量是否为空
+		if (feedingRecord.getQuantity() == null) {
+			throw new RuntimeException("喂食数量不能为空");
+		}
+
+		// 喂食数量是否为负
+		if (feedingRecord.getQuantity().compareTo(BigDecimal.ZERO) <= 0) {
+			throw new RuntimeException("喂食数量必须大于0");
+		}
+
+
+		// 限制最大喂食量（示例：限制为不超过1000kg，可根据实际业务调整）
+		BigDecimal maxQuantity = new BigDecimal("1000");
+		if (feedingRecord.getQuantity().compareTo(maxQuantity) > 0) {
+			throw new RuntimeException("喂食数量不能超过" + maxQuantity + "kg");
+		}
+
 		// 1. 查询原记录
 		FeedingRecord originalRecord = feedingRecordService.getById (feedingRecord.getId ());
 		if (originalRecord == null) {
@@ -192,9 +224,7 @@ public class FeedingRecordController extends JeecgController<FeedingRecord, IFee
 			inventoryService.updateById (inventory);
 // 更新出库记录
 			QueryWrapper<StockOut> stockOutQuery = new QueryWrapper<>();
-			stockOutQuery.eq("material_id", feedingRecord.getFormulaId()) // 使用配方ID关联物资ID
-					.eq("out_date", feedingRecord.getFeedDate())           // 使用喂食日期
-					.eq("purpose", "feeding");                              // 用途为喂食
+			stockOutQuery.eq("material_id", feedingRecord.getFormulaId()); // 使用配方ID关联物资ID
 			StockOut stockOut = stockOutService.getOne(stockOutQuery);
 			if (stockOut != null) {
 				stockOut.setQuantity(feedingRecord.getQuantity());
