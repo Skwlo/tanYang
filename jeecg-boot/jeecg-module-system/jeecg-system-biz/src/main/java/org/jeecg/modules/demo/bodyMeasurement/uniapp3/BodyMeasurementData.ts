@@ -12,7 +12,7 @@ export const columns = [
     dataIndex: 'measureDate',
    },
    {
-    title: '测量阶段（羔羊期 / 育肥期等）',
+    title: '测量阶段（羔牛期 / 育肥期等）',
     align:"center",
     dataIndex: 'measureStage_dictText'
    },

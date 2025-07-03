@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import org.apache.poi.hpsf.Decimal;
 import org.jeecg.common.constant.ProvinceCityArea;
 import org.jeecg.common.util.SpringContextUtils;
 import lombok.Data;
@@ -67,7 +68,7 @@ public class TreatmentPlanMedication implements Serializable {
 	/**剂量*/
 	@Excel(name = "剂量", width = 15)
     @Schema(description = "剂量")
-    private String dosage;
+    private BigDecimal dosage;
 	/**用法*/
 	@Excel(name = "用法", width = 15)
     @Schema(description = "用法")

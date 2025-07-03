@@ -16,12 +16,12 @@ export const columns: BasicColumn[] = [
     dataIndex: 'electronicEarTag'
    },
    {
-    title: '品种（如滩羊）',
+    title: '品种（如黄牛）',
     align:"center",
     dataIndex: 'breed_dictText'
    },
    {
-    title: '类别（种羊、肉羊等）',
+    title: '类别（种牛、肉牛等）',
     align:"center",
     dataIndex: 'category_dictText'
    },
@@ -111,7 +111,7 @@ export const formSchema: FormSchema[] = [
      },
   },
   {
-    label: '品种（如滩羊）',
+    label: '品种（如黄牛）',
     field: 'breed',
     component: 'JDictSelectTag',
     componentProps:{
@@ -119,12 +119,12 @@ export const formSchema: FormSchema[] = [
      },
     dynamicRules: ({model,schema}) => {
           return [
-                 { required: true, message: '请输入品种（如滩羊）!'},
+                 { required: true, message: '请输入品种（如黄牛）!'},
           ];
      },
   },
   {
-    label: '类别（种羊、肉羊等）',
+    label: '类别（种牛、肉牛等）',
     field: 'category',
     component: 'JDictSelectTag',
     componentProps:{
@@ -132,7 +132,7 @@ export const formSchema: FormSchema[] = [
      },
     dynamicRules: ({model,schema}) => {
           return [
-                 { required: true, message: '请输入类别（种羊、肉羊等）!'},
+                 { required: true, message: '请输入类别（种牛、肉牛等）!'},
           ];
      },
   },
@@ -254,8 +254,8 @@ export const formSchema: FormSchema[] = [
 export const superQuerySchema = {
   commonEarTag: {title: '普通耳号',order: 0,view: 'text', type: 'string',},
   electronicEarTag: {title: '电子耳号',order: 1,view: 'text', type: 'string',},
-  breed: {title: '品种（如滩羊）',order: 2,view: 'list', type: 'string',dictCode: 'pinzhong',},
-  category: {title: '类别（种羊、肉羊等）',order: 3,view: 'list', type: 'string',dictCode: 'leibie',},
+  breed: {title: '品种（如黄牛）',order: 2,view: 'list', type: 'string',dictCode: 'pinzhong',},
+  category: {title: '类别（种牛、肉牛等）',order: 3,view: 'list', type: 'string',dictCode: 'leibie',},
   gender: {title: '性别（M/F）',order: 4,view: 'list', type: 'string',dictCode: 'xingbie',},
   birthDate: {title: '出生日期',order: 5,view: 'date', type: 'string',},
   source: {title: '来源（采购 / 自繁）',order: 6,view: 'list', type: 'string',dictCode: 'laiyuan',},

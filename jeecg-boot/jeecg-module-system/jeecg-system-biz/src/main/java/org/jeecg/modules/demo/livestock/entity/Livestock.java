@@ -64,15 +64,15 @@ public class Livestock implements Serializable {
 	@Excel(name = "电子耳号", width = 15)
     @Schema(description = "电子耳号")
     private String electronicEarTag;
-	/**品种（如滩羊）*/
-	@Excel(name = "品种（如滩羊）", width = 15)
+	/**品种（如黄牛）*/
+	@Excel(name = "品种（如黄牛）", width = 15)
     @Dict(dicCode = "pinzhong")
-    @Schema(description = "品种（如滩羊）")
+    @Schema(description = "品种（如黄牛）")
     private String breed;
-	/**类别（种羊、肉羊等）*/
-	@Excel(name = "类别（种羊、肉羊等）", width = 15)
+	/**类别（种牛、肉牛等）*/
+	@Excel(name = "类别（种牛、肉牛等）", width = 15)
     @Dict(dicCode = "leibie")
-    @Schema(description = "类别（种羊、肉羊等）")
+    @Schema(description = "类别（种牛、肉牛等）")
     private String category;
 	/**性别（M/F）*/
 	@Excel(name = "性别（M/F）", width = 15)

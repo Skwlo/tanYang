@@ -10,9 +10,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.query.QueryRuleEnum;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.diseaseTreatmentRecord.entity.DiseaseTreatmentRecord;
 import org.jeecg.modules.demo.diseaseTreatmentRecord.service.IDiseaseTreatmentRecordService;
@@ -22,6 +28,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.demo.inventory.entity.Inventory;
+import org.jeecg.modules.demo.inventory.service.IInventoryService;
+import org.jeecg.modules.demo.stockOut.entity.StockOut;
+import org.jeecg.modules.demo.stockOut.service.IStockOutService;
+import org.jeecg.modules.demo.treatmentPlanMedication.entity.TreatmentPlanMedication;
+import org.jeecg.modules.demo.treatmentPlanMedication.service.ITreatmentPlanMedicationService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -52,7 +64,13 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class DiseaseTreatmentRecordController extends JeecgController<DiseaseTreatmentRecord, IDiseaseTreatmentRecordService> {
 	@Autowired
 	private IDiseaseTreatmentRecordService diseaseTreatmentRecordService;
-	
+	@Autowired
+	private ITreatmentPlanMedicationService treatmentPlanMedicationService;
+	@Autowired
+	private IInventoryService inventoryService;
+	@Autowired
+	private IStockOutService stockOutService;
+
 	/**
 	 * 分页列表查询
 	 *
@@ -89,13 +107,66 @@ public class DiseaseTreatmentRecordController extends JeecgController<DiseaseTre
 	@AutoLog(value = "疾病治疗记录表-添加")
 	@Operation(summary="疾病治疗记录表-添加")
 	@RequiresPermissions("diseaseTreatmentRecord:disease_treatment_record:add")
-	@PostMapping(value = "/add")
+	@PostMapping("/add")
+	@Transactional
 	public Result<String> add(@RequestBody DiseaseTreatmentRecord diseaseTreatmentRecord) {
+		// 获取当前用户名 作为出库操作时 记录操作人员名称
+		Subject subject = SecurityUtils.getSubject();
+		LoginUser loginUser = (LoginUser) subject.getPrincipal();
+		String username = loginUser.getUsername();
+		// 保存治疗记录
 		diseaseTreatmentRecordService.save(diseaseTreatmentRecord);
-		return Result.OK("添加成功！");
+
+		// 获取治疗方案 ID
+		String treatmentPlanId = diseaseTreatmentRecord.getTreatmentPlanId();
+
+		// 查询治疗方案对应的所有用药明细
+		QueryWrapper<TreatmentPlanMedication> medicationQuery = new QueryWrapper<>();
+		medicationQuery.eq("treatment_plan_id", treatmentPlanId);
+		List<TreatmentPlanMedication> medicationList = treatmentPlanMedicationService.list(medicationQuery);
+
+		if (medicationList == null || medicationList.isEmpty()) {
+			return Result.error("治疗方案下无用药信息，无法扣减库存！");
+		}
+
+		for (TreatmentPlanMedication medication : medicationList) {
+			String materialId = medication.getMaterialId(); // 药品 ID
+			BigDecimal dosage = medication.getDosage();    // 每种药品用量
+
+			// 根据 material_id 查询库存
+			QueryWrapper<Inventory> inventoryQuery = new QueryWrapper<>();
+			inventoryQuery.eq("material_id", materialId);
+			Inventory inventory = inventoryService.getOne(inventoryQuery);
+
+			if (inventory == null) {
+				return Result.error("药品" + materialId + "库存不存在！");
+			}
+
+			if (inventory.getCurrentQuantity().compareTo(dosage) < 0) {
+				return Result.error("药品" + materialId + "库存不足，无法完成治疗！");
+			}
+
+			// 扣减库存
+			inventory.setCurrentQuantity(inventory.getCurrentQuantity().subtract(dosage));
+			inventoryService.updateById(inventory);
+
+			// 记录出库
+			StockOut stockOut = new StockOut();
+			stockOut.setMaterialId(materialId);
+			stockOut.setQuantity(dosage);
+			stockOut.setOutDate(diseaseTreatmentRecord.getOnsetDate());
+			stockOut.setOperator(username);
+			stockOut.setPurpose("疾病治疗");
+			stockOut.setNote("治疗自动出库记录");
+			stockOutService.save(stockOut);
+		}
+
+		return Result.OK("添加成功并同步扣减药品库存！");
 	}
-	
-	/**
+
+
+
+	 /**
 	 *  编辑
 	 *
 	 * @param diseaseTreatmentRecord

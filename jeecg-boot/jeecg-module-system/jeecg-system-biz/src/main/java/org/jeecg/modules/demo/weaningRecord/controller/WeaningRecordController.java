@@ -1,9 +1,7 @@
 package org.jeecg.modules.demo.weaningRecord.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -14,6 +12,8 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.query.QueryRuleEnum;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.demo.livestock.entity.Livestock;
+import org.jeecg.modules.demo.livestock.service.ILivestockService;
 import org.jeecg.modules.demo.weaningRecord.entity.WeaningRecord;
 import org.jeecg.modules.demo.weaningRecord.service.IWeaningRecordService;
 
@@ -52,7 +52,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class WeaningRecordController extends JeecgController<WeaningRecord, IWeaningRecordService> {
 	@Autowired
 	private IWeaningRecordService weaningRecordService;
-	
+	@Autowired
+	private ILivestockService livestockService;
 	/**
 	 * 分页列表查询
 	 *
@@ -86,6 +87,31 @@ public class WeaningRecordController extends JeecgController<WeaningRecord, IWea
 	@RequiresPermissions("weaningRecord:weaning_record:add")
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody WeaningRecord weaningRecord) {
+		// 获取输入的档案ID和新棚舍ID
+		String livestockId = weaningRecord.getLivestockId();
+		String newShedPenId = weaningRecord.getNewShedPenId();
+		// 将输入的档案ID与档案表中的ID进行匹配
+		QueryWrapper<Livestock> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("livestock_id", livestockId);
+		Livestock livestock = livestockService.getOne(queryWrapper);
+		if(livestock == null){
+			return Result.error("该畜只不存在");
+		}else {
+			// 计算断奶日龄 保留整数(天)
+			Date birthdayDate = livestock.getBirthDate();
+			Date weaningDateDate = weaningRecord.getWeaningDate();
+			long diffMillis = weaningDateDate.getTime() - birthdayDate.getTime();
+			int weaningAge = (int) (diffMillis / (1000 * 60 * 60 * 24));
+			/*	储存断奶日龄
+				并将档案表中当前牛的重量作为断奶记录中的重量
+				同时设置新棚舍 最后更新档案表
+			 */
+			weaningRecord.setWeaningAge(weaningAge);
+			weaningRecord.setWeaningWeight(livestock.getWeight());
+			livestock.setCurrentShedPenId(newShedPenId);
+			livestockService.updateById(livestock);
+		}
+
 		weaningRecordService.save(weaningRecord);
 		return Result.OK("添加成功！");
 	}

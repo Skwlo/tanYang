@@ -17,8 +17,8 @@
               <my-date label="测量日期：" fields="day" v-model="model.measureDate" placeholder="请输入测量日期"></my-date>
               <view class="cu-form-group">
                 <view class="flex align-center">
-                  <view class="title"><text space="ensp">测量阶段（羔羊期 / 育肥期等）：</text></view>
-                  <input  placeholder="请输入测量阶段（羔羊期 / 育肥期等）" v-model="model.measureStage"/>
+                  <view class="title"><text space="ensp">测量阶段（羔牛期 / 育肥期等）：</text></view>
+                  <input  placeholder="请输入测量阶段（羔牛期 / 育肥期等）" v-model="model.measureStage"/>
                 </view>
               </view>
               <view class="cu-form-group">

@@ -66,10 +66,10 @@ public class BodyMeasurement implements Serializable {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @Schema(description = "测量日期")
     private Date measureDate;
-	/**测量阶段（羔羊期 / 育肥期等）*/
-	@Excel(name = "测量阶段（羔羊期 / 育肥期等）", width = 15)
+	/**测量阶段（羔牛期 / 育肥期等）*/
+	@Excel(name = "测量阶段（羔牛期 / 育肥期等）", width = 15)
     @Dict(dicCode = "celiangjieduan")
-    @Schema(description = "测量阶段（羔羊期 / 育肥期等）")
+    @Schema(description = "测量阶段（羔牛期 / 育肥期等）")
     private String measureStage;
 	/**月龄*/
 	@Excel(name = "月龄", width = 15)

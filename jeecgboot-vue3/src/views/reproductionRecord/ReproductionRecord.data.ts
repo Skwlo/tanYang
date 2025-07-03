@@ -30,7 +30,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'liveOffspringCount_dictText'
    },
    {
-    title: '产崽状态（正常 / 难产）',
+    title: '产崽状态',
     align:"center",
     dataIndex: 'status_dictText'
    },
@@ -52,28 +52,29 @@ export const searchFormSchema: FormSchema[] = [
       },
       //colProps: {span: 6},
  	},
+	// {
+  //     label: "产崽数量",
+  //     field: 'offspringCount',
+  //     component: 'JSelectMultiple',
+  //     componentProps:{
+  //     },
+  //     //colProps: {span: 6},
+ 	// },
+	// {
+  //     label: "活崽数量",
+  //     field: 'liveOffspringCount',
+  //     component: 'JSelectMultiple',
+  //     componentProps:{
+  //     },
+  //     //colProps: {span: 6},
+ 	// },
 	{
-      label: "产崽数量",
-      field: 'offspringCount',
-      component: 'JSelectMultiple',
-      componentProps:{
-      },
-      //colProps: {span: 6},
- 	},
-	{
-      label: "活崽数量",
-      field: 'liveOffspringCount',
-      component: 'JSelectMultiple',
-      componentProps:{
-      },
-      //colProps: {span: 6},
- 	},
-	{
-      label: "产崽状态（正常 / 难产）",
+      label: "产崽状态",
       field: 'status',
-      component: 'JSelectMultiple',
-      componentProps:{
-      },
+      component: 'JDictSelectTag',
+      componentProps: {
+      dictCode: "huozaiStatue"
+    },
       //colProps: {span: 6},
  	},
 ];
@@ -129,7 +130,7 @@ export const formSchema: FormSchema[] = [
      },
   },
   {
-    label: '产崽状态（正常 / 难产）',
+    label: '产崽状态',
     field: 'status',
     component: 'JDictSelectTag',
     componentProps:{
@@ -156,7 +157,7 @@ export const superQuerySchema = {
   reproductionDate: {title: '产崽日期',order: 1,view: 'date', type: 'string',},
   offspringCount: {title: '产崽数量',order: 2,view: 'number', type: 'number',dictCode: 'chanzanNumber',},
   liveOffspringCount: {title: '活崽数量',order: 3,view: 'number', type: 'number',dictCode: 'huozaiNumber',},
-  status: {title: '产崽状态（正常 / 难产）',order: 4,view: 'list', type: 'string',dictCode: 'huozaiStatue',},
+  status: {title: '产崽状态',order: 4,view: 'list', type: 'string',dictCode: 'huozaiStatue',},
 };
 
 /**

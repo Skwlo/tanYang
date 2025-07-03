@@ -34,17 +34,20 @@ export const columns: BasicColumn[] = [
     },
    },
    {
-    title: '配种方式（自然 / 人工）',
+    title: '配种方式',
     align:"center",
     dataIndex: 'method_dictText'
    },
    {
-    title: '配种状态（成功 / 失败）',
-    align:"center",
-    dataIndex: 'status_dictText'
+     title: '配种状态',
+     align: 'center',
+     dataIndex: 'status',
+     customRender: ({ record }) => {
+       return record.status_dictText || record.status;
+     },
    },
    {
-    title: '是否繁育（1/0）',
+    title: '是否繁育',
     align:"center",
     dataIndex: 'isBreeding_dictText'
    },
@@ -82,27 +85,29 @@ export const searchFormSchema: FormSchema[] = [
       //colProps: {span: 6},
  	},
 	{
-      label: "配种方式（自然 / 人工）",
+      label: "配种方式",
       field: 'method',
       component: 'JSelectMultiple',
-      componentProps:{
-      },
+      componentProps: {
+      dictCode: "peizhong-way"
+    },
       //colProps: {span: 6},
  	},
-	{
-      label: "配种状态（成功 / 失败）",
+  {
+      label: "配种状态",
       field: 'status',
-      component: 'JSelectMultiple',
-      componentProps:{
+      component: 'JDictSelectTag',
+      componentProps: {
+        dictCode: "Peizhong-Zhuangtai"
       },
-      //colProps: {span: 6},
- 	},
+  },
 	{
-      label: "是否繁育（1/0）",
+      label: "是否繁育",
       field: 'isBreeding',
-      component: 'JSelectMultiple',
+      component: 'JDictSelectTag',
       componentProps:{
-      },
+      dictCode:"isBreeding"
+    },
       //colProps: {span: 6},
  	},
 ];
@@ -155,7 +160,7 @@ export const formSchema: FormSchema[] = [
      },
   },
   {
-    label: '配种方式（自然 / 人工）',
+    label: '配种方式',
     field: 'method',
     component: 'JDictSelectTag',
     componentProps:{
@@ -168,7 +173,7 @@ export const formSchema: FormSchema[] = [
      },
   },
   {
-    label: '配种状态（成功 / 失败）',
+    label: '配种状态',
     field: 'status',
     component: 'JDictSelectTag',
     componentProps:{

@@ -5,12 +5,12 @@
     <div class="aui-logo" v-if="!getIsMobile">
       <div>
         <h3>
-          <img :src="logoImg" alt="jeecg" />
+          <img :src="logoImg" alt="jeecg" @click="toggleAudio" style="cursor:pointer;" />
         </h3>
       </div>
     </div>
     <div v-else class="aui-phone-logo">
-      <img :src="logoImg" alt="jeecg" />
+      <img :src="logoImg" alt="jeecg" @click="toggleAudio" style="cursor:pointer;" />
     </div>
     <div v-show="type === 'login'">
       <div class="aui-content">
@@ -147,6 +147,7 @@
     
     <!-- 图片验证码弹窗 -->
     <CaptchaModal @register="captchaRegisterModal" @ok="getLoginCode" />
+    <audio ref="audioRef" src="/cowvoice.mp3" loop></audio>
   </div>
 </template>
 <script lang="ts" setup name="login-mini">
@@ -220,6 +221,8 @@
   const loginLoading = ref<boolean>(false);
   const { getIsMobile } = useAppInject();
   const [captchaRegisterModal, { openModal: openCaptchaModal }] = useModal();
+  const audioRef = ref<HTMLAudioElement | null>(null);
+  const isPlaying = ref(false);
   defineProps({
     sessionTimeout: {
       type: Boolean,
@@ -424,6 +427,18 @@
     setTimeout(() => {
       codeRef.value.initFrom();
     }, 300);
+  }
+
+  function toggleAudio() {
+    if (audioRef.value) {
+      if (isPlaying.value) {
+        audioRef.value.pause();
+        isPlaying.value = false;
+      } else {
+        audioRef.value.play();
+        isPlaying.value = true;
+      }
+    }
   }
 
   onMounted(() => {

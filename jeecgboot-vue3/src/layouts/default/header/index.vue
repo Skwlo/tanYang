@@ -25,6 +25,15 @@
     <div :class="`${prefixCls}-action`">
       <AppSearch :class="`${prefixCls}-action__item `" v-if="getShowSearch" />
 
+      <!-- 喇叭按钮 -->
+      <img
+        src="/trumpet.png"
+        alt="播放背景音乐"
+        style="width: 32px; height: 32px; cursor: pointer; margin-left: 8px;"
+        @click="toggleAudio"
+      />
+      <audio ref="audioRef" src="/cowvoice.mp3" loop></audio>
+
       <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
 
       <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
@@ -45,7 +54,7 @@
         <template #icon>
           <span class="cow-icon">🐮</span>
         </template>
-        牛牛管理
+        🐮牛牛管理
       </a-button>
 
       <UserDropDown :theme="getHeaderTheme" />
@@ -205,6 +214,20 @@
         router.push('/cow');
       }
 
+      const audioRef = ref(null);
+      const isPlaying = ref(false);
+      function toggleAudio() {
+        if (audioRef.value) {
+          if (isPlaying.value) {
+            audioRef.value.pause();
+            isPlaying.value = false;
+          } else {
+            audioRef.value.play();
+            isPlaying.value = true;
+          }
+        }
+      }
+
       onMounted(() => {
         showLoginSelect();
       });
@@ -237,7 +260,10 @@
         loginSelectRef,
         title,
         t,
-        goCowPage
+        goCowPage,
+        audioRef,
+        isPlaying,
+        toggleAudio
       };
     },
   });

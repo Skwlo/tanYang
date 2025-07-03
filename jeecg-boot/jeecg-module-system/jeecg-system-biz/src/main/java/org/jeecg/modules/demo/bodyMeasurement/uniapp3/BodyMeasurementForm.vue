@@ -39,7 +39,7 @@ navigationBarTitleText: '体尺测量记录表',
         </view>
           <view class="{ 'mt-14px': 0 == 0 }">
               <online-select
-                :label="get4Label('测量阶段（羔羊期 / 育肥期等）')"
+                :label="get4Label('测量阶段（羔牛期 / 育肥期等）')"
                  labelWidth="100px"
                  type="list"
                  name='measureStage'

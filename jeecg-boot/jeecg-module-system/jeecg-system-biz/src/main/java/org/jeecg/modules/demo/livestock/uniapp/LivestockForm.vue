@@ -22,14 +22,14 @@
               </view>
               <view class="cu-form-group">
                 <view class="flex align-center">
-                  <view class="title"><text space="ensp">品种（如滩羊）：</text></view>
-                  <input  placeholder="请输入品种（如滩羊）" v-model="model.breed"/>
+                  <view class="title"><text space="ensp">品种（如黄牛）：</text></view>
+                  <input  placeholder="请输入品种（如黄牛）" v-model="model.breed"/>
                 </view>
               </view>
               <view class="cu-form-group">
                 <view class="flex align-center">
-                  <view class="title"><text space="ensp">类别（种羊、肉羊等）：</text></view>
-                  <input  placeholder="请输入类别（种羊、肉羊等）" v-model="model.category"/>
+                  <view class="title"><text space="ensp">类别（种牛、肉牛等）：</text></view>
+                  <input  placeholder="请输入类别（种牛、肉牛等）" v-model="model.category"/>
                 </view>
               </view>
               <view class="cu-form-group">

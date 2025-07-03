@@ -95,62 +95,63 @@ public class FeedingRecordController extends JeecgController<FeedingRecord, IFee
 	@RequiresPermissions("feedingRecord:feeding_record:add")
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody FeedingRecord feedingRecord) {
-		// 1. 保存喂食记录
-		feedingRecordService.save (feedingRecord);
+			// 1. 先校验喂食棚栏 ID 是否存在于 ShedPen 表
+			QueryWrapper<ShedPen> shedPenQuery = new QueryWrapper<>();
+			shedPenQuery.eq("shed_pen_id", feedingRecord.getShedPenId());
+			if (!shedPenService.exists(shedPenQuery)) {
+				throw new RuntimeException("喂食棚栏 ID 不存在，无法完成喂食记录添加");
+			}
 
-		// 校验喂食棚栏 ID 是否存在于 ShedPen 表的 shed_pen_id 字段
-		QueryWrapper<ShedPen> shedPenQuery = new QueryWrapper<>();
-		shedPenQuery.eq("shed_pen_id", feedingRecord.getShedPenId());
-		if (!shedPenService.exists(shedPenQuery)) {
-			throw new RuntimeException("喂食棚栏 ID 不存在，无法完成喂食记录添加");
+			// 2. 校验使用配方 ID 是否存在于 FormulaIngredient 表
+			QueryWrapper<FormulaIngredient> formulaQuery = new QueryWrapper<>();
+			formulaQuery.eq("material_id", feedingRecord.getFormulaId());
+			if (!formulaIngredientService.exists(formulaQuery)) {
+				throw new RuntimeException("使用配方 ID 不存在，无法完成喂食记录添加");
+			}
+
+			// 3. 校验喂食数量
+			if (feedingRecord.getQuantity() == null) {
+				throw new RuntimeException("喂食数量不能为空");
+			}
+
+			if (feedingRecord.getQuantity().compareTo(BigDecimal.ZERO) <= 0) {
+				throw new RuntimeException("喂食数量必须大于0");
+			}
+
+			// 限制最大喂食量
+			BigDecimal maxQuantity = new BigDecimal("1000");
+			if (feedingRecord.getQuantity().compareTo(maxQuantity) > 0) {
+				throw new RuntimeException("喂食数量不能超过" + maxQuantity + "kg");
+			}
+
+			// 4. 校验饲料库存
+			QueryWrapper<Inventory> inventoryQuery = new QueryWrapper<>();
+			inventoryQuery.eq("material_id", feedingRecord.getFormulaId());
+			Inventory inventory = inventoryService.getOne(inventoryQuery);
+			if (inventory == null || inventory.getCurrentQuantity().compareTo(feedingRecord.getQuantity()) < 0) {
+				throw new RuntimeException("饲料库存不足，无法完成喂食记录添加");
+			}
+
+			// 5. 所有校验通过后，再保存喂食记录
+			feedingRecordService.save(feedingRecord);
+
+			// 6. 创建出库记录
+			StockOut stockOut = new StockOut();
+			stockOut.setMaterialId(feedingRecord.getFormulaId());
+			stockOut.setQuantity(feedingRecord.getQuantity());
+			stockOut.setOutDate(new Date());
+			stockOut.setPurpose("喂食");
+			stockOut.setOperator(feedingRecord.getOperator());
+			stockOut.setNote("喂食消耗");
+			stockOutService.save(stockOut);
+
+			// 7. 更新库存
+			inventory.setCurrentQuantity(inventory.getCurrentQuantity().subtract(feedingRecord.getQuantity()));
+			inventory.setLastOutDate(new Date());
+			inventoryService.updateById(inventory);
+
+			return Result.OK("添加成功！");
 		}
-
-		// 校验使用配方 ID 是否存在于 FormulaIngredient 表的 formulaId 字段
-		QueryWrapper<FormulaIngredient> formulaQuery = new QueryWrapper<>();
-		formulaQuery.eq("material_id", feedingRecord.getFormulaId());
-		if (!formulaIngredientService.exists(formulaQuery)) {
-			throw new RuntimeException("使用配方 ID 不存在，无法完成喂食记录添加");
-		}
-
-		// 喂食数量是否为空
-		if (feedingRecord.getQuantity() == null) {
-			throw new RuntimeException("喂食数量不能为空");
-		}
-
-		// 喂食数量是否为负
-		if (feedingRecord.getQuantity().compareTo(BigDecimal.ZERO) <= 0) {
-			throw new RuntimeException("喂食数量必须大于0");
-		}
-
-
-		// 限制最大喂食量（示例：限制为不超过1000kg，可根据实际业务调整）
-		BigDecimal maxQuantity = new BigDecimal("1000");
-		if (feedingRecord.getQuantity().compareTo(maxQuantity) > 0) {
-			throw new RuntimeException("喂食数量不能超过" + maxQuantity + "kg");
-		}
-
-// 2. 校验饲料库存 (使用 materialId 关联库存表)
-		QueryWrapper<Inventory> inventoryQuery = new QueryWrapper<>();
-		inventoryQuery.eq ("material_id", feedingRecord.getFormulaId ()); // 假设配方 ID 对应物资 ID
-		Inventory inventory = inventoryService.getOne (inventoryQuery);
-		if (inventory == null || inventory.getCurrentQuantity ().compareTo (feedingRecord.getQuantity ()) < 0) {
-			throw new RuntimeException ("饲料库存不足，无法完成喂食记录添加");
-		}
-// 3. 创建出库记录
-		StockOut stockOut = new StockOut ();
-		stockOut.setMaterialId (feedingRecord.getFormulaId ()); // 假设配方 ID 对应物资 ID
-		stockOut.setQuantity (feedingRecord.getQuantity ());
-		stockOut.setOutDate (new Date());
-		stockOut.setPurpose ("喂食");
-		stockOut.setOperator (feedingRecord.getOperator ());
-		stockOut.setNote ("喂食消耗");
-		stockOutService.save (stockOut);
-// 4. 更新库存
-		inventory.setCurrentQuantity (inventory.getCurrentQuantity ().subtract (feedingRecord.getQuantity ()));
-		inventory.setLastOutDate (new Date ());
-		inventoryService.updateById (inventory);
-		return Result.OK ("添加成功！");
-	}
 
 	/**
 	 *  编辑
@@ -315,9 +316,7 @@ public class FeedingRecordController extends JeecgController<FeedingRecord, IFee
     for (FeedingRecord record : records) {
 		 if (record.getFormulaId() != null && record.getFeedDate() != null) {
 			 QueryWrapper<StockOut> stockOutQuery = new QueryWrapper<>();
-			 stockOutQuery.eq("material_id", record.getFormulaId())  // 使用配方ID关联物资ID
-					 .eq("out_date", record.getFeedDate())      // 使用喂食日期
-					 .eq("purpose", "feeding");                  // 用途为喂食
+			 stockOutQuery.eq("material_id", record.getFormulaId());  // 使用配方ID关联物资ID
 			 stockOutService.remove(stockOutQuery);
 		 }
 	 }

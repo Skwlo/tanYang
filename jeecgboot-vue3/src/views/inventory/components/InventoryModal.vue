@@ -1,11 +1,3 @@
-<!--
- * @Author: kelemengqi 1565916105@qq.com
- * @Date: 2025-06-17 09:10:02
- * @LastEditors: kelemengqi 1565916105@qq.com
- * @LastEditTime: 2025-06-26 09:58:45
- * @FilePath: /JeecgBoot-master/jeecgboot-vue3/src/views/inventory/components/InventoryModal.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" destroyOnClose :title="title" :width="800" @ok="handleSubmit">
       <BasicForm @register="registerForm" name="InventoryForm" />

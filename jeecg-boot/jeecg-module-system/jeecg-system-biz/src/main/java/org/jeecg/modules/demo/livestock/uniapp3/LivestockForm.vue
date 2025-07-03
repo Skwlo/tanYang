@@ -44,7 +44,7 @@ navigationBarTitleText: '畜只表',
         </view>
           <view class="{ 'mt-14px': 0 == 0 }">
               <online-select
-                :label="get4Label('品种（如滩羊）')"
+                :label="get4Label('品种（如黄牛）')"
                  labelWidth="100px"
                  type="list"
                  name='breed'
@@ -54,7 +54,7 @@ navigationBarTitleText: '畜只表',
         </view>
           <view class="{ 'mt-14px': 1 == 0 }">
               <online-select
-                :label="get4Label('类别（种羊、肉羊等）')"
+                :label="get4Label('类别（种牛、肉牛等）')"
                  labelWidth="100px"
                  type="list"
                  name='category'

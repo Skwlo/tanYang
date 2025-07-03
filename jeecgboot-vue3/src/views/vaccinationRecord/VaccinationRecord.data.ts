@@ -6,7 +6,7 @@ import { getWeekMonthQuarterYear } from '/@/utils';
 //列表数据
 export const columns: BasicColumn[] = [
    {
-    title: '畜只 ID（可选，群体免疫时为空）',
+    title: '畜只 ID',
     align:"center",
     dataIndex: 'livestockId'
    },
@@ -40,7 +40,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'standard'
    },
    {
-    title: '免疫范围（个体 / 群体）',
+    title: '免疫范围',
     align:"center",
     dataIndex: 'scope_dictText'
    },
@@ -53,7 +53,7 @@ export const columns: BasicColumn[] = [
 //查询数据
 export const searchFormSchema: FormSchema[] = [
 	{
-      label: "畜只 ID（可选，群体免疫时为空）",
+      label: "畜只 ID",
       field: 'livestockId',
       component: 'Input',
       //colProps: {span: 6},
@@ -73,38 +73,39 @@ export const searchFormSchema: FormSchema[] = [
       },
       //colProps: {span: 6},
  	},
+	// {
+  //     label: "使用剂量",
+  //     field: 'dosage',
+  //     component: 'InputNumber',
+  //     //colProps: {span: 6},
+ 	// },
+	// {
+  //     label: "注射部位",
+  //     field: 'injectionSite',
+  //     component: 'Input',
+  //     //colProps: {span: 6},
+ 	// },
+	// {
+  //     label: "合格指标",
+  //     field: 'standard',
+  //     component: 'Input',
+  //     //colProps: {span: 6},
+ 	// },
 	{
-      label: "使用剂量",
-      field: 'dosage',
-      component: 'InputNumber',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "注射部位",
-      field: 'injectionSite',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "合格指标",
-      field: 'standard',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "免疫范围（个体 / 群体）",
+      label: "免疫范围",
       field: 'scope',
-      component: 'JSelectMultiple',
+      component: 'JDictSelectTag',
       componentProps:{
+        dictCode:"mianyiFanwei"
       },
       //colProps: {span: 6},
  	},
-	{
-      label: "说明",
-      field: 'note',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
+	// {
+  //     label: "说明",
+  //     field: 'note',
+  //     component: 'Input',
+  //     //colProps: {span: 6},
+ 	// },
 ];
 //表单数据
 export const formSchema: FormSchema[] = [

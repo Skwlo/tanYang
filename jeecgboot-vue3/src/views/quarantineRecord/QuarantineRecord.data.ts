@@ -6,12 +6,12 @@ import { getWeekMonthQuarterYear } from '/@/utils';
 //列表数据
 export const columns: BasicColumn[] = [
    {
-    title: '畜只 ID（可选，群体检疫时为空）',
+    title: '畜只 ID',
     align:"center",
     dataIndex: 'livestockId'
    },
    {
-    title: '棚栏 ID（群体检疫时使用）',
+    title: '棚栏 ID',
     align:"center",
     dataIndex: 'shedPenId'
    },
@@ -43,13 +43,13 @@ export const columns: BasicColumn[] = [
 //查询数据
 export const searchFormSchema: FormSchema[] = [
 	{
-      label: "畜只 ID（可选，群体检疫时为空）",
+      label: "畜只 ID",
       field: 'livestockId',
       component: 'Input',
       //colProps: {span: 6},
  	},
 	{
-      label: "棚栏 ID（群体检疫时使用）",
+      label: "棚栏 ID",
       field: 'shedPenId',
       component: 'Input',
       //colProps: {span: 6},
@@ -75,12 +75,12 @@ export const searchFormSchema: FormSchema[] = [
       component: 'Input',
       //colProps: {span: 6},
  	},
-	{
-      label: "检疫报告文件路径",
-      field: 'reportPath',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
+	// {
+  //     label: "检疫报告文件路径",
+  //     field: 'reportPath',
+  //     component: 'Input',
+  //     //colProps: {span: 6},
+ 	// },
 ];
 //表单数据
 export const formSchema: FormSchema[] = [
@@ -88,11 +88,6 @@ export const formSchema: FormSchema[] = [
     label: '畜只 ID（可选，群体检疫时为空）',
     field: 'livestockId',
     component: 'Input',
-    dynamicRules: ({model,schema}) => {
-          return [
-                 { required: true, message: '请输入畜只 ID（可选，群体检疫时为空）!'},
-          ];
-     },
   },
   {
     label: '棚栏 ID（群体检疫时使用）',

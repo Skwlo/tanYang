@@ -60,11 +60,13 @@ public class VaccinationRecord implements Serializable {
 	@Excel(name = "畜只 ID（可选，群体免疫时为空）", width = 15)
     @Schema(description = "畜只 ID（可选，群体免疫时为空）")
     private String livestockId;
-	/**疫苗 ID*/
-	@Excel(name = "疫苗 ID", width = 15)
+    /**疫苗 ID*/
+    @Excel(name = "疫苗 ID", width = 15)
+    @Dict(dictTable = "inventory", dicText = "material_id", dicCode = "material_id")
     @Schema(description = "疫苗 ID")
     private String vaccineId;
-	/**免疫日期*/
+
+    /**免疫日期*/
 	@Excel(name = "免疫日期", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")

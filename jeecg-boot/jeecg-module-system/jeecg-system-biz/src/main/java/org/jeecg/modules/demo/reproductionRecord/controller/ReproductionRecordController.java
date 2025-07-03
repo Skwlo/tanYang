@@ -14,6 +14,8 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.query.QueryRuleEnum;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.demo.breedingRecord.entity.BreedingRecord;
+import org.jeecg.modules.demo.breedingRecord.service.IBreedingRecordService;
 import org.jeecg.modules.demo.reproductionRecord.entity.ReproductionRecord;
 import org.jeecg.modules.demo.reproductionRecord.service.IReproductionRecordService;
 
@@ -52,7 +54,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class ReproductionRecordController extends JeecgController<ReproductionRecord, IReproductionRecordService> {
 	@Autowired
 	private IReproductionRecordService reproductionRecordService;
-	
+	@Autowired
+	private IBreedingRecordService breedingRecordService;
 	/**
 	 * 分页列表查询
 	 *
@@ -92,6 +95,16 @@ public class ReproductionRecordController extends JeecgController<ReproductionRe
 	@RequiresPermissions("reproductionRecord:reproduction_record:add")
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody ReproductionRecord reproductionRecord) {
+		String reproductionRecordId = reproductionRecord.getBreedingId();
+		QueryWrapper<BreedingRecord> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("id", reproductionRecordId);
+		BreedingRecord breedingRecord = breedingRecordService.getOne(queryWrapper);
+		if (breedingRecord != null) {
+			breedingRecord.setIsBreeding("1");
+			breedingRecordService.updateById(breedingRecord);
+		} else {
+			return Result.error("未找到对应的繁殖记录！");
+		}
 		reproductionRecordService.save(reproductionRecord);
 		return Result.OK("添加成功！");
 	}

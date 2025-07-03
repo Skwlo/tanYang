@@ -45,7 +45,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'veterinarian'
    },
    {
-    title: '是否治愈（1/0）	',
+    title: '是否治愈',
     align:"center",
     dataIndex: 'isCured_dictText'
    },
@@ -72,26 +72,27 @@ export const searchFormSchema: FormSchema[] = [
       },
       //colProps: {span: 6},
  	},
-	{
-      label: "疾病类型",
-      field: 'diseaseType',
-      component: 'JSelectMultiple',
-      componentProps:{
-      },
-      //colProps: {span: 6},
- 	},
-	{
-      label: "主要症状",
-      field: 'symptoms',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
-	{
-      label: "发病原因",
-      field: 'cause',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
+  // {
+  //   label: "疾病类型",
+  //   field: 'diseaseType',
+  //   component: 'JDictSelectTag',
+  //   componentProps:{
+  //     dictCode:"jibingWay",
+  //     immediate: true
+  //   },
+  // },
+	// {
+  //     label: "主要症状",
+  //     field: 'symptoms',
+  //     component: 'Input',
+  //     //colProps: {span: 6},
+ 	// },
+	// {
+  //     label: "发病原因",
+  //     field: 'cause',
+  //     component: 'Input',
+  //     //colProps: {span: 6},
+ 	// },
 	{
       label: "治疗方案 ID",
       field: 'treatmentPlanId',
@@ -105,19 +106,20 @@ export const searchFormSchema: FormSchema[] = [
       //colProps: {span: 6},
  	},
 	{
-      label: "是否治愈（1/0）	",
+      label: "是否治愈",
       field: 'isCured',
-      component: 'JSelectMultiple',
+      component: 'JDictSelectTag',
       componentProps:{
-      },
+      dictCode:"shifouzhiyu"
+    },
       //colProps: {span: 6},
  	},
-	{
-      label: "治疗说明",
-      field: 'note',
-      component: 'Input',
-      //colProps: {span: 6},
- 	},
+	// {
+  //     label: "治疗说明",
+  //     field: 'note',
+  //     component: 'Input',
+  //     //colProps: {span: 6},
+ 	// },
 ];
 //表单数据
 export const formSchema: FormSchema[] = [
@@ -198,7 +200,7 @@ export const formSchema: FormSchema[] = [
      },
   },
   {
-    label: '是否治愈（1/0）	',
+    label: '是否治愈',
     field: 'isCured',
     component: 'JDictSelectTag',
     componentProps:{

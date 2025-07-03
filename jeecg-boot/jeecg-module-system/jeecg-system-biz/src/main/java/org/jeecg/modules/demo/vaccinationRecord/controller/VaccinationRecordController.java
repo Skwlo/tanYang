@@ -1,5 +1,6 @@
 package org.jeecg.modules.demo.vaccinationRecord.controller;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +11,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.query.QueryRuleEnum;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.demo.inventory.entity.Inventory;
+import org.jeecg.modules.demo.inventory.service.IInventoryService;
+import org.jeecg.modules.demo.stockOut.entity.StockOut;
+import org.jeecg.modules.demo.stockOut.service.IStockOutService;
 import org.jeecg.modules.demo.vaccinationRecord.entity.VaccinationRecord;
 import org.jeecg.modules.demo.vaccinationRecord.service.IVaccinationRecordService;
 
@@ -37,7 +44,10 @@ import com.alibaba.fastjson.JSON;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import org.jeecg.common.aspect.annotation.AutoLog;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
+import org.jeecg.common.system.vo.LoginUser;
 
  /**
  * @Description: 免疫记录表
@@ -52,7 +62,12 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class VaccinationRecordController extends JeecgController<VaccinationRecord, IVaccinationRecordService> {
 	@Autowired
 	private IVaccinationRecordService vaccinationRecordService;
-	
+	@Autowired
+	private IInventoryService inventoryService;
+
+	@Autowired
+	private IStockOutService stockOutService;
+
 	/**
 	 * 分页列表查询
 	 *
@@ -85,15 +100,58 @@ public class VaccinationRecordController extends JeecgController<VaccinationReco
 	 * @param vaccinationRecord
 	 * @return
 	 */
-	@AutoLog(value = "免疫记录表-添加")
-	@Operation(summary="免疫记录表-添加")
-	@RequiresPermissions("vaccinationRecord:vaccination_record:add")
+//	@AutoLog(value = "免疫记录表-添加")
+//	@Operation(summary="免疫记录表-添加")
+//	@RequiresPermissions("vaccinationRecord:vaccination_record:add")
+//	@PostMapping(value = "/add")
+//	public Result<String> add(@RequestBody VaccinationRecord vaccinationRecord) {
+//		vaccinationRecordService.save(vaccinationRecord);
+//		return Result.OK("添加成功！");
+//	}
 	@PostMapping(value = "/add")
+	@Transactional
 	public Result<String> add(@RequestBody VaccinationRecord vaccinationRecord) {
+		// 获取当前用户名 作为出库操作时 记录操作人员名称
+		Subject subject = SecurityUtils.getSubject();
+		LoginUser loginUser = (LoginUser) subject.getPrincipal();
+		String username = loginUser.getUsername();
+
+		// 判断疫苗在不在库存
+		QueryWrapper<Inventory> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("material_id", vaccinationRecord.getVaccineId());
+		Inventory inventory = inventoryService.getOne(queryWrapper);
+		if (inventory == null) {
+			return Result.error("库存信息不存在！");
+		}
+
+		// 判断疫苗库存数量够不够
+		int usageQuantity = vaccinationRecord.getDosage().intValue();
+		if (inventory.getCurrentQuantity().compareTo(BigDecimal.valueOf(usageQuantity)) < 0) {
+			return Result.error("库存不足，无法完成免疫操作！");
+		}
+
+		// 保存免疫记录
 		vaccinationRecordService.save(vaccinationRecord);
-		return Result.OK("添加成功！");
+
+		// 在库存表减少疫苗数量
+		inventory.setCurrentQuantity(inventory.getCurrentQuantity().subtract(BigDecimal.valueOf(usageQuantity)));
+		inventory.setLastOutDate(vaccinationRecord.getVaccinationDate());
+		inventoryService.updateById(inventory);
+
+		// 在出库记录表中记录出库信息
+		StockOut stockOut = new StockOut();
+		stockOut.setMaterialId(vaccinationRecord.getVaccineId());
+		stockOut.setQuantity(vaccinationRecord.getDosage());
+		stockOut.setOutDate(vaccinationRecord.getVaccinationDate());
+		stockOut.setPurpose("免疫");
+		stockOut.setOperator(username);
+		stockOut.setNote("免疫自动出库记录");
+		stockOutService.save(stockOut);
+
+		return Result.OK("添加成功");
 	}
-	
+
+
 	/**
 	 *  编辑
 	 *
@@ -180,5 +238,4 @@ public class VaccinationRecordController extends JeecgController<VaccinationReco
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
         return super.importExcel(request, response, VaccinationRecord.class);
     }
-
 }

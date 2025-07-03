@@ -12,12 +12,12 @@ export const columns = [
     dataIndex: 'electronicEarTag'
    },
    {
-    title: '品种（如滩羊）',
+    title: '品种（如黄牛）',
     align:"center",
     dataIndex: 'breed_dictText'
    },
    {
-    title: '类别（种羊、肉羊等）',
+    title: '类别（种牛、肉牛等）',
     align:"center",
     dataIndex: 'category_dictText'
    },

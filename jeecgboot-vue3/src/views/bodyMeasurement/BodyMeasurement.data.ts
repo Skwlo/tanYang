@@ -20,7 +20,7 @@ export const columns: BasicColumn[] = [
     },
    },
    {
-    title: '测量阶段（羔羊期 / 育肥期等）',
+    title: '测量阶段（羔牛期 / 育肥期等）',
     align:"center",
     dataIndex: 'measureStage_dictText'
    },
@@ -73,7 +73,7 @@ export const searchFormSchema: FormSchema[] = [
       //colProps: {span: 6},
  	},
 	{
-      label: "测量阶段（羔羊期 / 育肥期等）",
+      label: "测量阶段（羔牛期 / 育肥期等）",
       field: 'measureStage',
       component: 'JSelectMultiple',
       componentProps:{
@@ -143,7 +143,7 @@ export const formSchema: FormSchema[] = [
      },
   },
   {
-    label: '测量阶段（羔羊期 / 育肥期等）',
+    label: '测量阶段（羔牛期 / 育肥期等）',
     field: 'measureStage',
     component: 'JDictSelectTag',
     componentProps:{
@@ -151,7 +151,7 @@ export const formSchema: FormSchema[] = [
      },
     dynamicRules: ({model,schema}) => {
           return [
-                 { required: true, message: '请输入测量阶段（羔羊期 / 育肥期等）!'},
+                 { required: true, message: '请输入测量阶段（羔牛期 / 育肥期等）!'},
           ];
      },
   },
@@ -228,7 +228,7 @@ export const formSchema: FormSchema[] = [
 export const superQuerySchema = {
   livestockId: {title: '畜只 ID',order: 0,view: 'text', type: 'string',},
   measureDate: {title: '测量日期',order: 1,view: 'date', type: 'string',},
-  measureStage: {title: '测量阶段（羔羊期 / 育肥期等）',order: 2,view: 'list', type: 'string',dictCode: 'celiangjieduan',},
+  measureStage: {title: '测量阶段（羔牛期 / 育肥期等）',order: 2,view: 'list', type: 'string',dictCode: 'celiangjieduan',},
   age: {title: '月龄',order: 3,view: 'number', type: 'number',},
   bodyHeight: {title: '体高 (cm)',order: 4,view: 'number', type: 'number',},
   bodyWeight: {title: '体重(kg)',order: 5,view: 'number', type: 'number',},
